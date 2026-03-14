@@ -1,0 +1,14 @@
+Flask
+Flask-Session
+pandas
+numpy
+pycaret
+plotly
+scikit-learn
+xgboost
+lightgbm
+catboost
+psutil
+Werkzeug
+python-dotenv
+gunicorn
