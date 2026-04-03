@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dataflare ML Studio - AutoML Platform</title>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fc;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: #94a3b8;
+            margin-bottom: 1rem;
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-flex;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-green {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .badge-blue {
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .badge-purple {
+            background: rgba(168, 85, 247, 0.15);
+            color: #c084fc;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            background: transparent;
+            color: #64748b;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .tab:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .tab.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* Stats Grid */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            border-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.1);
+        }
+
+        .stat-card .label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.2;
+        }
+
+        .stat-card .sub {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 0.25rem;
+        }
+
+        .stat-card.good .value { color: #22c55e; }
+        .stat-card.warn .value { color: #f59e0b; }
+        .stat-card.danger .value { color: #ef4444; }
+
+        /* Section Headers */
+        .section-head {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .section-head h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        /* Buttons */
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #1e293b;
+            border-color: #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+            box-shadow: none;
+        }
+
+        .btn-danger {
+            background: white;
+            color: #ef4444;
+            border-color: #fee2e2;
+        }
+
+        .btn-danger:hover {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        /* File Upload */
+        .upload-area {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            color: #475569;
+            transition: all 0.2s;
+        }
+
+        .upload-area:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        /* Forms */
+        select, input {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            color: #1e293b;
+            padding: 0.6rem 1rem;
+            width: 100%;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        select:focus, input:focus {
+            border-color: #2563eb;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        /* Cards */
+        .feature-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: #2563eb;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.1);
+        }
+
+        .feature-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .feature-card p {
+            font-size: 0.875rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .data-table th {
+            background: #f1f5f9;
+            color: #475569;
+            font-weight: 600;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .data-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .data-table tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Loading */
+        .loader {
+            border: 3px solid #f1f5f9;
+            border-radius: 50%;
+            border-top: 3px solid #2563eb;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            border-left: 4px solid #22c55e;
+            color: #166534;
+        }
+
+        .alert-warning {
+            background: #fef9c3;
+            border-left: 4px solid #f59e0b;
+            color: #854d0e;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+        }
+
+        /* Hidden */
+        .hidden {
+            display: none;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #cbd5e1, transparent);
+            margin: 1.5rem 0;
+        }
+
+        /* Target Card */
+        .target-card {
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin: 1rem 0;
+            border: 1px solid;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .target-card.classification {
+            background: #ecfdf5;
+            border-color: #86efac;
+        }
+
+        .target-card.regression {
+            background: #eff6ff;
+            border-color: #93c5fd;
+        }
+
+        .target-card .tc-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+        }
+
+        .target-card .tc-type {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .target-card.classification .tc-type {
+            color: #16a34a;
+        }
+
+        .target-card.regression .tc-type {
+            color: #2563eb;
+        }
+
+        /* Results Banner */
+        .results-banner {
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-banner h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .results-banner p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .results-score {
+            margin-left: auto;
+            text-align: right;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+        }
+
+        .results-score .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #94a3b8;
+        }
+
+        .results-score .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4ade80;
+        }
+
+        /* History Card */
+        .history-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .history-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 4px;
+        }
+
+        .history-indicator.classification { background: #22c55e; }
+        .history-indicator.regression { background: #2563eb; }
+
+        .history-content {
+            flex: 1;
+            margin-left: 0.5rem;
+        }
+
+        .history-title {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .history-meta {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 0.15rem;
+        }
+
+        .history-score {
+            text-align: right;
+        }
+
+        .history-score .label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .history-score .value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .history-score .value.classification { color: #22c55e; }
+        .history-score .value.regression { color: #2563eb; }
+
+        /* Health Score */
+        .health-bar {
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .health-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stat-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .results-score {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Dataflare ML Studio</h1>
+            <p>AutoML Platform - No Code Required</p>
+            <div class="badge-row">
+                <span class="badge badge-green">AutoML</span>
+                <span class="badge badge-blue">15+ Algorithms</span>
+                <span class="badge badge-purple">Smart Detection</span>
+                <span class="badge badge-green">Production Ready</span>
+            </div>
+        </div>
+        
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="{{ '' if data_exists else 'hidden' }}">
+            <div class="grid-4" style="margin: 2rem 0;">
+                <div class="feature-card">
+                    <h3>Smart EDA</h3>
+                    <p>Correlation heatmaps, distribution plots, and missing value analysis.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>AutoML Engine</h3>
+                    <p>15+ algorithms with k-fold cross-validation. Best model selected automatically.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Smart Detection</h3>
+                    <p>Auto-detects regression vs classification. Quick data cleaning tools.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Rich Results</h3>
+                    <p>Model comparison, metrics radar, and model export (pkl format).</p>
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div style="background: #f1f5f9; border-radius: 16px; padding: 2rem; text-align: center; margin: 2rem 0;">
+                <h3 style="margin-bottom: 1rem; color: #0f172a;">All Features Free - No Limits</h3>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem;">
+                    <span class="badge badge-green">XGBoost</span>
+                    <span class="badge badge-green">LightGBM</span>
+                    <span class="badge badge-green">CatBoost</span>
+                    <span class="badge badge-green">10-fold CV</span>
+                    <span class="badge badge-green">Model Export</span>
+                    <span class="badge badge-green">13+ Algorithms</span>
+                    <span class="badge badge-green">Unlimited Training</span>
+                </div>
+            </div>
+            
+            <p style="text-align: center; color: #64748b;">Upload a CSV/Excel file or load a sample dataset to get started</p>
+        </div>
+        
+        <!-- Main App -->
+        <div id="mainApp" class="{{ '' if data_exists else 'hidden' }}">
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" data-tab="explorer">Data Explorer</button>
+                <button class="tab" data-tab="eda">EDA & Insights</button>
+                <button class="tab" data-tab="train">Train Model</button>
+                <button class="tab" data-tab="results">Results</button>
+                <button class="tab" data-tab="history">History</button>
+            </div>
+            
+            <!-- Data Explorer Tab -->
+            <div id="tabExplorer" class="tab-content">
+                <div class="stat-grid" id="statsGrid"></div>
+                
+                <div class="divider"></div>
+                
+                <div class="section-head">
+                    <h3>Quick Actions</h3>
+                </div>
+                <div class="grid-4" style="margin-bottom: 1.5rem;">
+                    <button class="btn btn-secondary" onclick="cleanData('drop_duplicates')">Drop Duplicates</button>
+                    <button class="btn btn-secondary" onclick="cleanData('drop_null_cols')">Drop All-Null Cols</button>
+                    <button class="btn btn-secondary" onclick="showDataTypes()">Show Data Types</button>
+                    <button class="btn btn-secondary" id="downloadDataBtn">Download CSV</button>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="section-head">
+                    <h3>Data Preview</h3>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <input type="text" id="filterColumns" placeholder="Filter columns (comma-separated) e.g. Age, Sex">
+                </div>
+                <div style="margin: 1rem 0;">
+                    <label>Rows to show: </label>
+                    <input type="range" id="previewRows" min="5" max="100" value="20" style="width: 200px;">
+                    <span id="previewRowsValue">20</span>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="data-table" id="previewTable">
+                        <thead id="previewHeader"></thead>
+                        <tbody id="previewBody"></tbody>
+                    </table>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="grid-2">
+                    <div>
+                        <div class="section-head">
+                            <h3>Column Details</h3>
+                        </div>
+                        <div style="max-height: 400px; overflow-y: auto;">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Column</th>
+                                        <th>Type</th>
+                                        <th>Non-Null</th>
+                                        <th>Null %</th>
+                                        <th>Unique</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="columnDetailsBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="section-head">
+                            <h3>Statistical Summary</h3>
+                        </div>
+                        <div style="max-height: 400px; overflow-y: auto;" id="statsTable"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- EDA Tab -->
+            <div id="tabEda" class="tab-content hidden">
+                <div class="section-head">
+                    <h3>Distribution Analysis</h3>
+                </div>
+                
+                <div class="grid-2" style="margin-bottom: 1rem;">
+                    <div>
+                        <label>Select Column</label>
+                        <select id="edaColumn"></select>
+                    </div>
+                    <div>
+                        <label>Chart Type</label>
+                        <select id="edaChartType">
+                            <option value="histogram">Histogram</option>
+                            <option value="box">Box Plot</option>
+                            <option value="violin">Violin Plot</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="grid-2">
+                    <div>
+                        <div id="edaPlot" style="height: 400px;"></div>
+                    </div>
+                    <div>
+                        <div class="stat-card" id="edaStats">
+                            <div class="label">Statistics</div>
+                            <div id="edaStatsContent"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="section-head">
+                    <h3>Correlation Heatmap</h3>
+                </div>
+                <div id="correlationPlot" style="height: 500px;"></div>
+            </div>
+            
+            <!-- Train Tab -->
+            <div id="tabTrain" class="tab-content hidden">
+                <div class="section-head">
+                    <h3>Training Configuration</h3>
+                </div>
+                
+                <div class="grid-2">
+                    <div>
+                        <label>Select Target Column</label>
+                        <select id="targetColumn"></select>
+                    </div>
+                    <div id="targetInfo"></div>
+                </div>
+                
+                <div style="background: #ecfdf5; border: 1px solid #86efac; border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+                    <p style="color: #166534; margin: 0;">All features included: XGBoost, LightGBM, CatBoost, 10-fold CV</p>
+                </div>
+                
+                <details style="margin: 1rem 0;">
+                    <summary style="cursor: pointer; color: #2563eb; font-weight: 600;">Advanced Configuration</summary>
+                    <div class="grid-3" style="margin-top: 1rem;">
+                        <div>
+                            <label>Training Split</label>
+                            <input type="range" id="trainSize" min="0.5" max="0.9" step="0.05" value="0.8">
+                            <span id="trainSizeValue">0.8</span>
+                        </div>
+                        <div>
+                            <label>CV Folds</label>
+                            <input type="number" id="fold" min="2" max="10" value="5">
+                        </div>
+                        <div>
+                            <label>Max Models</label>
+                            <input type="number" id="maxModels" min="2" max="20" value="20">
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div>
+                            <label>
+                                <input type="checkbox" id="normalize" checked> Normalize Features
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input type="checkbox" id="removeOutliers"> Remove Outliers
+                            </label>
+                        </div>
+                    </div>
+                </details>
+                
+                <div style="margin: 2rem 0;">
+                    <button class="btn" id="trainBtn" onclick="trainModel()">Start Training</button>
+                </div>
+                
+                <div id="trainingProgress" class="hidden">
+                    <div class="loader"></div>
+                    <div id="trainingStatus"></div>
+                    <div id="trainingWarnings"></div>
+                </div>
+            </div>
+            
+            <!-- Results Tab -->
+            <div id="tabResults" class="tab-content hidden">
+                <div id="resultsBanner" class="hidden results-banner"></div>
+                
+                <div class="grid-2" style="margin-bottom: 1rem;">
+                    <div>
+                        <button class="btn btn-secondary" id="downloadResultsBtn">Export Results CSV</button>
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary" id="downloadModelBtn">Download Model</button>
+                    </div>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="section-head">
+                    <h3>All Models Ranked</h3>
+                </div>
+                <div style="overflow-x: auto;" id="resultsTable"></div>
+                
+                <div class="divider"></div>
+                
+                <div class="grid-2">
+                    <div id="topModelsPlot" style="height: 400px;"></div>
+                    <div id="radarPlot" style="height: 400px;"></div>
+                </div>
+            </div>
+            
+            <!-- History Tab -->
+            <div id="tabHistory" class="tab-content hidden">
+                <div class="section-head">
+                    <h3>Training History</h3>
+                </div>
+                <div style="color: #64748b; margin-bottom: 1rem;">Session-based history</div>
+                
+                <div id="historyList"></div>
+                
+                <div style="margin-top: 2rem;">
+                    <button class="btn btn-secondary" id="downloadHistoryBtn">Export History CSV</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar/Controls -->
+        <div style="margin-top: 2rem; padding: 1.5rem; background: white; border: 1px solid #e2e8f0; border-radius: 12px;">
+            <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;">
+                <div style="flex: 2; min-width: 250px;">
+                    <div style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: #64748b; margin-bottom: 0.5rem;">
+                        Data Source
+                    </div>
+                    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                        <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" style="display: none;" onchange="handleFileUpload(this)">
+                        Click to upload CSV/Excel
+                    </div>
+                </div>
+                
+                <div style="flex: 1; min-width: 200px;">
+                    <div style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: #64748b; margin-bottom: 0.5rem;">
+                        Sample Datasets
+                    </div>
+                    <select id="sampleSelect" style="width: 100%;">
+                        <option value="">Select sample...</option>
+                        <option value="titanic">Titanic</option>
+                        <option value="diamonds">Diamonds</option>
+                        <option value="iris">Iris</option>
+                    </select>
+                    <button class="btn btn-secondary" onclick="loadSample()" style="width: 100%; margin-top: 0.5rem;">Load Sample</button>
+                </div>
+                
+                <div id="healthScore" class="hidden" style="flex: 1; min-width: 200px;">
+                    <div style="font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: #64748b; margin-bottom: 0.5rem;">
+                        Dataset Health
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span style="font-size: 1.5rem; font-weight: 700;" id="healthValue"></span>
+                        <div class="health-bar">
+                            <div class="health-fill" id="healthBar"></div>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.75rem; color: #64748b; margin-top: 0.25rem;" id="healthDetails"></div>
+                </div>
+                
+                <button class="btn btn-danger" onclick="clearSession()">Clear Data</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Global state
+        let currentTab = 'explorer';
+        let currentModelId = null;
+        
+        // Initialize
+        $(document).ready(function() {
+            if ({{ 'true' if data_exists else 'false' }}) {
+                loadDataInfo();
+                loadColumnDetails();
+                loadPreview();
+                loadStats();
+                loadColumns();
+                
+                $('.tab[data-tab="eda"]').one('click', function() {
+                    setTimeout(loadCorrelationHeatmap, 500);
+                });
+            }
+            
+            $('#previewRows').on('input', function() {
+                $('#previewRowsValue').text($(this).val());
+                loadPreview();
+            });
+        });
+        
+        // Tab switching
+        $('.tab').click(function() {
+            $('.tab').removeClass('active');
+            $(this).addClass('active');
+            
+            $('.tab-content').addClass('hidden');
+            $('#tab' + $(this).data('tab').charAt(0).toUpperCase() + $(this).data('tab').slice(1)).removeClass('hidden');
+            
+            let tabName = $(this).data('tab');
+            if (tabName === 'results') {
+                loadResults();
+            } else if (tabName === 'history') {
+                loadHistory();
+            } else if (tabName === 'eda') {
+                loadEDAColumns();
+                if (!$('#correlationPlot').data('loaded')) {
+                    loadCorrelationHeatmap();
+                }
+            }
+        });
+        
+        // File upload
+        function handleFileUpload(input) {
+            let file = input.files[0];
+            let formData = new FormData();
+            formData.append('file', file);
+            
+            $.ajax({
+                url: '/api/upload',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    showAlert('success', `File uploaded: ${response.filename} (${response.rows} rows, ${response.columns} columns)`);
+                    window.location.reload();
+                },
+                error: function(xhr) {
+                    showAlert('error', 'Upload failed: ' + (xhr.responseJSON ? xhr.responseJSON.error : 'Unknown error'));
+                }
+            });
+        }
+        
+        // Load sample
+        function loadSample() {
+            let sample = $('#sampleSelect').val();
+            if (!sample) return;
+            
+            $.ajax({
+                url: '/api/load-sample',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ sample: sample }),
+                success: function(response) {
+                    showAlert('success', `Loaded sample: ${sample}`);
+                    window.location.reload();
+                },
+                error: function(xhr) {
+                    showAlert('error', 'Failed to load sample: ' + (xhr.responseJSON ? xhr.responseJSON.error : 'Unknown error'));
+                }
+            });
+        }
+        
+        // Clear session
+        function clearSession() {
+            if (confirm('Clear all data?')) {
+                $.post('/api/clear-session', function() {
+                    window.location.reload();
+                });
+            }
+        }
+        
+        // Load data info
+        function loadDataInfo() {
+            $.get('/api/data-info', function(data) {
+                let healthColor = data.health_score > 80 ? '#22c55e' : (data.health_score > 50 ? '#f59e0b' : '#ef4444');
+                
+                $('#statsGrid').html(`
+                    <div class="stat-card ${data.null_pct <= 5 ? 'good' : (data.null_pct <= 15 ? 'warn' : 'danger')}">
+                        <div class="label">Total Rows</div>
+                        <div class="value">${data.rows.toLocaleString()}</div>
+                        <div class="sub">records</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Columns</div>
+                        <div class="value">${data.columns}</div>
+                        <div class="sub">features</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Numerical</div>
+                        <div class="value">${data.num_cols}</div>
+                        <div class="sub">numeric cols</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Categorical</div>
+                        <div class="value">${data.cat_cols}</div>
+                        <div class="sub">text cols</div>
+                    </div>
+                    <div class="stat-card ${data.null_pct == 0 ? 'good' : (data.null_pct <= 10 ? 'warn' : 'danger')}">
+                        <div class="label">Missing</div>
+                        <div class="value">${data.null_pct}%</div>
+                        <div class="sub">${data.null_count} cells</div>
+                    </div>
+                `);
+                
+                $('#healthScore').removeClass('hidden');
+                $('#healthValue').text(data.health_score + '/100').css('color', healthColor);
+                $('#healthBar').css({
+                    'width': data.health_score + '%',
+                    'background': healthColor
+                });
+                $('#healthDetails').text(`${data.null_count} nulls · ${data.duplicates} duplicates`);
+            });
+        }
+        
+        // Load column details
+        function loadColumnDetails() {
+            $.get('/api/column-details', function(data) {
+                let html = '';
+                data.details.forEach(col => {
+                    html += `<tr>
+                        <td>${col.column}</td>
+                        <td>${col.type}</td>
+                        <td>${col.non_null.toLocaleString()}</td>
+                        <td>${col.null_pct}%</td>
+                        <td>${col.unique.toLocaleString()}</td>
+                    </tr>`;
+                });
+                $('#columnDetailsBody').html(html);
+            });
+        }
+        
+        // Load preview
+        function loadPreview() {
+            let columns = $('#filterColumns').val();
+            let rows = $('#previewRows').val();
+            
+            $.get('/api/data-preview', { columns: columns, rows: rows }, function(data) {
+                let headerHtml = '<tr>';
+                data.columns.forEach(col => headerHtml += `<th>${col}</th>`);
+                headerHtml += '</tr>';
+                $('#previewHeader').html(headerHtml);
+                
+                let bodyHtml = '';
+                data.data.forEach(row => {
+                    bodyHtml += '<tr>';
+                    data.columns.forEach(col => {
+                        let val = row[col];
+                        if (val === null) val = 'null';
+                        else if (typeof val === 'number') val = val.toLocaleString();
+                        bodyHtml += `<td>${val}</td>`;
+                    });
+                    bodyHtml += '</tr>';
+                });
+                $('#previewBody').html(bodyHtml);
+            });
+        }
+        
+        // Load stats
+        function loadStats() {
+            $.get('/api/data-stats', function(data) {
+                if (Object.keys(data.stats).length === 0) {
+                    $('#statsTable').html('<p>No numerical columns found.</p>');
+                    return;
+                }
+                
+                let df = data.stats;
+                let html = '<table class="data-table">';
+                html += '<tr><th>Statistic</th>';
+                Object.keys(df).forEach(col => html += `<th>${col}</th>`);
+                html += '</tr>';
+                
+                ['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max'].forEach(stat => {
+                    html += '<tr><td>' + stat + '</td>';
+                    Object.keys(df).forEach(col => {
+                        let val = df[col][stat];
+                        html += `<td>${val !== undefined ? val.toLocaleString() : ''}</td>`;
+                    });
+                    html += '</tr>';
+                });
+                
+                html += '</table>';
+                $('#statsTable').html(html);
+            });
+        }
+        
+        // Load columns for train tab
+        function loadColumns() {
+            $.get('/api/data-info', function(data) {
+                let options = '';
+                data.column_names.forEach(col => {
+                    options += `<option value="${col}">${col}</option>`;
+                });
+                $('#targetColumn').html(options);
+                $('#edaColumn').html(options);
+            });
+        }
+        
+        // Filter preview
+        $('#filterColumns').on('input', loadPreview);
+        
+        // Clean data
+        function cleanData(operation) {
+            $.ajax({
+                url: '/api/clean-data',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ operation: operation }),
+                success: function(response) {
+                    showAlert('success', response.message);
+                    loadDataInfo();
+                    loadColumnDetails();
+                    loadPreview();
+                    loadStats();
+                },
+                error: function(xhr) {
+                    showAlert('error', 'Operation failed: ' + (xhr.responseJSON ? xhr.responseJSON.error : 'Unknown error'));
+                }
+            });
+        }
+        
+        // Show data types
+        function showDataTypes() {
+            $.get('/api/data-info', function(data) {
+                let html = '<table class="data-table"><tr><th>Column</th><th>Type</th></tr>';
+                Object.keys(data.dtypes).forEach(col => {
+                    html += `<tr><td>${col}</td><td>${data.dtypes[col]}</td></tr>`;
+                });
+                html += '</table>';
+                
+                let win = window.open('', '_blank');
+                win.document.write('<html><head><title>Data Types</title><link href="https://fonts.googleapis.com/css2?family=Inter&family=JetBrains+Mono&display=swap" rel="stylesheet"><style>body{font-family:Inter;padding:20px;}table{border-collapse:collapse;width:100%;}th,td{padding:8px;text-align:left;border-bottom:1px solid #e2e8f0;}</style></head><body>' + html + '</body></html>');
+            });
+        }
+        
+        // Download data
+        $('#downloadDataBtn').click(function() {
+            window.location.href = '/api/data-preview?download=true';
+        });
+        
+        // EDA
+        function loadEDAColumns() {
+            $.get('/api/data-info', function(data) {
+                let options = '';
+                data.column_names.forEach(col => options += `<option value="${col}">${col}</option>`);
+                $('#edaColumn').html(options);
+                updateEDAPlot();
+            });
+        }
+        
+        $('#edaColumn, #edaChartType').change(updateEDAPlot);
+        
+        function updateEDAPlot() {
+            let column = $('#edaColumn').val();
+            let chartType = $('#edaChartType').val();
+            
+            if (!column) return;
+            
+            $.get('/api/eda/distribution', { column: column, chart_type: chartType }, function(data) {
+                Plotly.newPlot('edaPlot', JSON.parse(data.plot).data, JSON.parse(data.plot).layout);
+                
+                let statsHtml = '';
+                Object.keys(data.stats).forEach(key => {
+                    let val = data.stats[key];
+                    if (val !== null && val !== undefined) {
+                        statsHtml += `<div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px solid #e2e8f0;">
+                            <span style="font-weight: 600;">${key}</span>
+                            <span style="font-family: 'JetBrains Mono';">${val}</span>
+                        </div>`;
+                    }
+                });
+                $('#edaStatsContent').html(statsHtml);
+            });
+        }
+        
+        // Correlation heatmap
+        function loadCorrelationHeatmap() {
+            $.get('/api/eda/correlation', function(data) {
+                if (data.plot) {
+                    Plotly.newPlot('correlationPlot', JSON.parse(data.plot).data, JSON.parse(data.plot).layout);
+                    $('#correlationPlot').data('loaded', true);
+                } else {
+                    $('#correlationPlot').html('<p style="text-align: center; padding: 2rem; color: #64748b;">Need at least 2 numeric columns for correlation heatmap</p>');
+                }
+            }).fail(function(xhr) {
+                if (xhr.responseJSON && xhr.responseJSON.error) {
+                    $('#correlationPlot').html(`<p style="text-align: center; padding: 2rem; color: #ef4444;">${xhr.responseJSON.error}</p>`);
+                }
+            });
+        }
+        
+        // Target detection
+        $('#targetColumn').change(function() {
+            let target = $(this).val();
+            $.ajax({
+                url: '/api/detect-target',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ target: target }),
+                success: function(data) {
+                    let cardClass = data.problem_type === 'classification' ? 'classification' : 'regression';
+                    $('#targetInfo').html(`
+                        <div class="target-card ${cardClass}">
+                            <div>
+                                <div class="tc-label">Problem Type Detected</div>
+                                <div class="tc-type">${data.type_label}</div>
+                                <div class="tc-meta">Target: ${target} · ${data.unique_values} unique values</div>
+                            </div>
+                        </div>
+                    `);
+                }
+            });
+        });
+        
+        // Training
+        $('#trainSize').on('input', function() {
+            $('#trainSizeValue').text($(this).val());
+        });
+        
+        function trainModel() {
+            let config = {
+                target: $('#targetColumn').val(),
+                train_size: parseFloat($('#trainSize').val()),
+                fold: parseInt($('#fold').val()),
+                normalize: $('#normalize').is(':checked'),
+                remove_outliers: $('#removeOutliers').is(':checked'),
+                max_models: parseInt($('#maxModels').val())
+            };
+            
+            $('#trainingProgress').removeClass('hidden');
+            $('#trainBtn').prop('disabled', true);
+            $('#trainingStatus').html('<div class="loader"></div><div>Training in progress...</div>');
+            
+            $.ajax({
+                url: '/api/train',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(config),
+                success: function(response) {
+                    $('#trainingStatus').html(`
+                        <div class="alert alert-success">
+                            Training complete in ${response.elapsed} (${response.trained_rows.toLocaleString()} rows)
+                        </div>
+                    `);
+                    
+                    if (response.warnings && response.warnings.length) {
+                        let warningsHtml = '';
+                        response.warnings.forEach(w => {
+                            warningsHtml += `<div class="alert alert-warning">${w}</div>`;
+                        });
+                        $('#trainingWarnings').html(warningsHtml);
+                    }
+                    
+                    currentModelId = response.model_id;
+                    showAlert('success', 'Training complete!');
+                    
+                    $('.tab').removeClass('active');
+                    $('.tab[data-tab="results"]').addClass('active');
+                    $('.tab-content').addClass('hidden');
+                    $('#tabResults').removeClass('hidden');
+                    
+                    loadResults();
+                },
+                error: function(xhr) {
+                    let error = xhr.responseJSON;
+                    if (error && error.error === 'memory_error') {
+                        $('#trainingStatus').html(`
+                            <div class="alert alert-error">
+                                Memory Error: ${error.message}<br>
+                                Try reducing dataset size or CV folds.
+                            </div>
+                        `);
+                    } else {
+                        $('#trainingStatus').html(`
+                            <div class="alert alert-error">Training failed: ${error ? error.message : 'Unknown error'}</div>
+                        `);
+                    }
+                },
+                complete: function() {
+                    $('#trainBtn').prop('disabled', false);
+                }
+            });
+        }
+        
+        // Results
+        function loadResults() {
+            $.get('/api/results', function(data) {
+                if (!data.exists) {
+                    $('#tabResults').html('<div style="text-align: center; padding: 5rem 2rem;"><h2>No results yet</h2><p style="color: #64748b;">Train a model in the Train Model tab first</p></div>');
+                    return;
+                }
+                
+                let best = data.top_models[0];
+                $('#resultsBanner').removeClass('hidden').html(`
+                    <div>
+                        <h2>${best[data.columns[0]]}</h2>
+                        <p>Best model via ${data.folds_used}-fold cross-validation</p>
+                    </div>
+                    <div class="results-score">
+                        <div class="label">${data.num_columns[0]}</div>
+                        <div class="value">${best[data.num_columns[0]].toFixed(4)}</div>
+                    </div>
+                `);
+                
+                let tableHtml = '<table class="data-table"><tr>';
+                data.columns.forEach(col => tableHtml += `<th>${col}</th>`);
+                tableHtml += '</tr>';
+                
+                data.top_models.forEach(row => {
+                    tableHtml += '<tr>';
+                    data.columns.forEach(col => {
+                        let val = row[col];
+                        if (typeof val === 'number') val = val.toFixed(4);
+                        tableHtml += `<td>${val}</td>`;
+                    });
+                    tableHtml += '</tr>';
+                });
+                tableHtml += '</table>';
+                $('#resultsTable').html(tableHtml);
+                
+                // Top models plot
+                let x = data.top_models.slice(0,6).map(r => r[data.num_columns[0]]);
+                let y = data.top_models.slice(0,6).map(r => r[data.columns[0]]);
+                
+                Plotly.newPlot('topModelsPlot', [{
+                    x: x,
+                    y: y,
+                    type: 'bar',
+                    orientation: 'h',
+                    marker: { color: ['#2563eb', ...Array(y.length-1).fill('#94a3b8')] },
+                    text: x.map(v => v.toFixed(4)),
+                    textposition: 'inside',
+                }], {
+                    title: `Top Models - ${data.num_columns[0]}`,
+                    height: 400,
+                    margin: { l: 150 }
+                });
+                
+                // Radar plot
+                if (Object.keys(data.best_metrics).length > 0) {
+                    let metrics = Object.keys(data.best_metrics).slice(0,6);
+                    let values = metrics.map(m => data.best_metrics[m]);
+                    let maxVal = Math.max(...values);
+                    let minVal = Math.min(...values);
+                    let normalized = values.map(v => (v - minVal) / (maxVal - minVal + 1e-9));
+                    
+                    Plotly.newPlot('radarPlot', [{
+                        type: 'scatterpolar',
+                        r: [...normalized, normalized[0]],
+                        theta: [...metrics, metrics[0]],
+                        fill: 'toself',
+                        fillcolor: 'rgba(37, 99, 235, 0.2)',
+                        line: { color: '#2563eb' }
+                    }], {
+                        title: 'Best Model Metrics',
+                        height: 400,
+                        polar: { radialaxis: { visible: true, range: [0,1] } }
+                    });
+                }
+            });
+        }
+        
+        // Download results
+        $('#downloadResultsBtn').click(function() {
+            window.location.href = '/api/download-results';
+        });
+        
+        $('#downloadModelBtn').click(function() {
+            if (currentModelId) {
+                window.location.href = `/api/download-model/${currentModelId}`;
+            }
+        });
+        
+        // History
+        function loadHistory() {
+            $.get('/api/history', function(data) {
+                if (!data.history.length) {
+                    $('#historyList').html('<div style="text-align: center; padding: 3rem; background: white; border: 1px solid #e2e8f0; border-radius: 12px;">No training history yet</div>');
+                    return;
+                }
+                
+                let html = '';
+                data.history.reverse().forEach(entry => {
+                    let type = entry.problem_type || 'classification';
+                    html += `
+                        <div class="history-card">
+                            <div class="history-indicator ${type}"></div>
+                            <div class="history-content">
+                                <div class="history-title">${entry.dataset}</div>
+                                <div class="history-meta">${entry.best_model} · ${entry.rows.toLocaleString()} rows · ${entry.time}</div>
+                            </div>
+                            <div class="history-score">
+                                <div class="label">Score</div>
+                                <div class="value ${type}">${entry.score.toFixed(4)}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                $('#historyList').html(html);
+            });
+        }
+        
+        $('#downloadHistoryBtn').click(function() {
+            window.location.href = '/api/download-history';
+        });
+        
+        // Alert helper
+        function showAlert(type, message) {
+            let alertDiv = $(`<div class="alert alert-${type}">${message}</div>`);
+            $('.container').prepend(alertDiv);
+            setTimeout(() => alertDiv.remove(), 5000);
+        }
+    </script>
+</body>
+</html>
