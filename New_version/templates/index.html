@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DataFlare — AutoML Platform</title>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080b10;
+    --surface:   #0e1218;
+    --surface-2: #141920;
+    --border:    #1e2630;
+    --border-2:  #2a3340;
+    --accent:    #00d9a6;
+    --accent-2:  #0098ff;
+    --accent-3:  #ff5e57;
+    --accent-4:  #f5a623;
+    --text:      #e8edf3;
+    --text-2:    #8a97a8;
+    --text-3:    #4a5568;
+    --radius:    10px;
+    --font:      'Syne', sans-serif;
+    --mono:      'JetBrains Mono', monospace;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Noise texture ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.6;
+  }
+
+  /* ── Top bar ── */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(8,11,16,0.88);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .logo-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--accent);
+    border-radius: 6px;
+    display: grid;
+    place-items: center;
+    font-size: 0.75rem;
+  }
+
+  .logo span { color: var(--accent); }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .nav-btn {
+    background: none;
+    border: none;
+    color: var(--text-2);
+    font-family: var(--font);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.45rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-btn:hover { color: var(--text); background: var(--surface-2); }
+  .nav-btn.active { color: var(--bg); background: var(--accent); }
+
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  /* ── Layout ── */
+  .wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .tab-content { display: none; animation: fadeUp 0.35s ease; }
+  .tab-content.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--border-2); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .card-title::before {
+    content: '';
+    width: 3px;
+    height: 14px;
+    background: var(--accent);
+    border-radius: 2px;
+    display: block;
+  }
+
+  /* ── Grid systems ── */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(520px, 1fr)); gap: 1.5rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+
+  /* ── Upload zone ── */
+  .upload-zone {
+    border: 1.5px dashed var(--border-2);
+    border-radius: var(--radius);
+    padding: 3.5rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s;
+    background: var(--surface-2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .upload-zone::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, rgba(0,217,166,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .upload-zone:hover {
+    border-color: var(--accent);
+    background: rgba(0,217,166,0.04);
+  }
+
+  .upload-zone.drag-over {
+    border-color: var(--accent);
+    background: rgba(0,217,166,0.08);
+  }
+
+  .upload-icon {
+    width: 56px; height: 56px;
+    background: var(--surface);
+    border: 1px solid var(--border-2);
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 1.25rem;
+    font-size: 1.5rem;
+    transition: transform 0.2s;
+  }
+
+  .upload-zone:hover .upload-icon { transform: translateY(-3px); }
+
+  .upload-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+  .upload-sub { font-size: 0.78rem; color: var(--text-2); font-family: var(--mono); }
+
+  .sample-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .sample-chip {
+    background: var(--surface-2);
+    border: 1px solid var(--border-2);
+    color: var(--text-2);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .sample-chip:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,217,166,0.06); }
+
+  /* ── KPI cards ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+
+  .kpi {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .kpi:hover { border-color: var(--border-2); transform: translateY(-2px); }
+
+  .kpi::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px 2px 0 0;
+  }
+
+  .kpi:nth-child(2)::before { background: var(--accent-2); }
+  .kpi:nth-child(3)::before { background: var(--accent-4); }
+  .kpi:nth-child(4)::before { background: var(--accent-3); }
+  .kpi:nth-child(5)::before { background: #a78bfa; }
+
+  .kpi-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-3); margin-bottom: 0.6rem; }
+  .kpi-value { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.03em; color: var(--text); }
+
+  /* ── Insight cards ── */
+  .insight {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .insight:hover { border-color: var(--border-2); transform: translateX(4px); }
+
+  .insight.info    { border-left: 3px solid var(--accent-2); }
+  .insight.warning { border-left: 3px solid var(--accent-4); }
+  .insight.critical{ border-left: 3px solid var(--accent-3); }
+
+  .insight-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+  .info    .insight-dot { background: var(--accent-2); box-shadow: 0 0 6px var(--accent-2); }
+  .warning .insight-dot { background: var(--accent-4); box-shadow: 0 0 6px var(--accent-4); }
+  .critical.insight-dot { background: var(--accent-3); box-shadow: 0 0 6px var(--accent-3); }
+
+  .insight-body { flex: 1; min-width: 0; }
+  .insight-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .insight-desc  { font-size: 0.78rem; color: var(--text-2); margin-bottom: 0.4rem; line-height: 1.5; }
+  .insight-meta  { font-family: var(--mono); font-size: 0.68rem; color: var(--text-3); }
+
+  /* ── Table ── */
+  .tbl-wrap { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+
+  thead th {
+    background: var(--surface-2);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-3);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-2);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+  }
+
+  tbody tr:hover td { background: var(--surface-2); color: var(--text); }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    font-family: var(--font);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.65rem 1.4rem;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,217,166,0.3); }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .btn-ghost {
+    background: none;
+    color: var(--text-2);
+    border: 1px solid var(--border-2);
+  }
+  .btn-ghost:hover:not(:disabled) { color: var(--text); border-color: var(--text-3); box-shadow: none; }
+
+  .btn-danger { background: var(--accent-3); }
+  .btn-danger:hover:not(:disabled) { box-shadow: 0 6px 20px rgba(255,94,87,0.3); }
+
+  .btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; }
+
+  /* ── Forms ── */
+  .form-row { margin-bottom: 1.25rem; }
+
+  .form-label {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-3);
+    margin-bottom: 0.5rem;
+  }
+
+  select, input[type=text], input[type=number] {
+    width: 100%;
+    background: var(--surface-2);
+    border: 1px solid var(--border-2);
+    border-radius: 7px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    padding: 0.6rem 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+  }
+
+  select:focus, input:focus { border-color: var(--accent); }
+
+  input[type=range] {
+    width: 100%;
+    appearance: none;
+    background: var(--border);
+    border-radius: 4px;
+    height: 4px;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,217,166,0.2);
+  }
+
+  .range-row { display: flex; align-items: center; gap: 0.75rem; }
+  .range-label { font-family: var(--mono); font-size: 0.78rem; color: var(--accent); white-space: nowrap; min-width: 40px; text-align: right; }
+
+  .checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    font-size: 0.82rem;
+    color: var(--text-2);
+    margin-bottom: 0.75rem;
+    transition: color 0.2s;
+  }
+  .checkbox-row:hover { color: var(--text); }
+
+  input[type=checkbox] {
+    width: 16px; height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 0;
+  }
+
+  /* ── Alerts / Toasts ── */
+  .alert {
+    padding: 0.9rem 1rem;
+    border-radius: var(--radius);
+    font-size: 0.82rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .alert-success { background: rgba(0,217,166,0.08); border: 1px solid rgba(0,217,166,0.25); color: var(--accent); }
+  .alert-error   { background: rgba(255,94,87,0.08); border: 1px solid rgba(255,94,87,0.25); color: var(--accent-3); }
+  .alert-warning { background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.25); color: var(--accent-4); }
+  .alert-info    { background: rgba(0,152,255,0.08); border: 1px solid rgba(0,152,255,0.25); color: var(--accent-2); }
+
+  /* ── Progress bar ── */
+  .progress-wrap {
+    background: var(--border);
+    border-radius: 4px;
+    height: 3px;
+    overflow: hidden;
+    margin-top: 1rem;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    width: 0%;
+    transition: width 0.4s ease;
+    border-radius: 4px;
+  }
+
+  /* ── Badge ── */
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    padding: 0.2rem 0.55rem;
+    border-radius: 50px;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-green  { background: rgba(0,217,166,0.12); color: var(--accent); border: 1px solid rgba(0,217,166,0.25); }
+  .badge-yellow { background: rgba(245,166,35,0.12); color: var(--accent-4); border: 1px solid rgba(245,166,35,0.25); }
+  .badge-red    { background: rgba(255,94,87,0.12); color: var(--accent-3); border: 1px solid rgba(255,94,87,0.25); }
+  .badge-blue   { background: rgba(0,152,255,0.12); color: var(--accent-2); border: 1px solid rgba(0,152,255,0.25); }
+
+  /* ── Loading overlay ── */
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(8,11,16,0.75);
+    backdrop-filter: blur(6px);
+    z-index: 9998;
+    place-items: center;
+  }
+  .loading-overlay.show { display: grid; }
+
+  .spinner {
+    width: 40px; height: 40px;
+    border: 2px solid var(--border-2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Viz container ── */
+  .viz-box {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .viz-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-3);
+    margin-bottom: 0.75rem;
+  }
+
+  /* ── Section heading ── */
+  .section-head {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-3);
+    margin: 1.5rem 0 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .section-head::after { content:''; flex:1; height:1px; background: var(--border); }
+
+  /* ── Toast ── */
+  .toast-stack {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    pointer-events: none;
+  }
+
+  .toast {
+    background: var(--surface);
+    border: 1px solid var(--border-2);
+    border-radius: var(--radius);
+    padding: 0.85rem 1.1rem;
+    font-size: 0.82rem;
+    max-width: 340px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: toastIn 0.3s ease;
+    pointer-events: all;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+
+  .toast.success .toast-icon { color: var(--accent); }
+  .toast.error   .toast-icon { color: var(--accent-3); }
+  .toast.warning .toast-icon { color: var(--accent-4); }
+  .toast.info    .toast-icon { color: var(--accent-2); }
+
+  @keyframes toastIn {
+    from { transform: translateX(20px); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
+  }
+
+  /* ── Divider ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+  /* ── Page header ── */
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    gap: 1rem;
+  }
+
+  .page-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.03em; }
+  .page-sub   { font-size: 0.78rem; color: var(--text-2); margin-top: 0.3rem; font-family: var(--mono); }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .wrapper { padding: 1rem; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .topbar { padding: 0 1rem; }
+    .nav-btn { padding: 0.4rem 0.6rem; font-size: 0.7rem; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<!-- ── Top bar ── -->
+<header class="topbar">
+  <div class="logo">
+    <div class="logo-icon">⚡</div>
+    Data<span>Flare</span>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn active" onclick="showTab('dashboard')">Dashboard</button>
+    <button class="nav-btn" onclick="showTab('eda')">Auto EDA</button>
+    <button class="nav-btn" onclick="showTab('visualizations')">Visualize</button>
+    <button class="nav-btn" onclick="showTab('training')">Training</button>
+    <button class="nav-btn" onclick="showTab('results')">Results</button>
+    <button class="nav-btn" onclick="showTab('history')">History</button>
+  </nav>
+  <div class="status-dot" title="System online"></div>
+</header>
+
+<!-- ══════════════════════════════════════════
+     DASHBOARD TAB
+════════════════════════════════════════════ -->
+<div class="wrapper">
+<div id="dashboard-tab" class="tab-content active">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">Workspace</div>
+      <div class="page-sub">Upload data or load a sample to begin</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Data Source</div>
+    </div>
+
+    <div class="upload-zone" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+      <div class="upload-icon">📂</div>
+      <div class="upload-title">Drop your file here</div>
+      <div class="upload-sub">CSV or Excel · max 100 MB</div>
+      <input type="file" id="fileInput" style="display:none" accept=".csv,.xlsx,.xls">
+    </div>
+
+    <div id="progressWrap" style="display:none">
+      <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    </div>
+
+    <div id="uploadStatus"></div>
+
+    <div class="sample-row">
+      <span style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);align-self:center;">Samples —</span>
+      <button class="sample-chip" onclick="loadSample('titanic')">🚢 Titanic</button>
+      <button class="sample-chip" onclick="loadSample('diamonds')">💎 Diamonds</button>
+      <button class="sample-chip" onclick="loadSample('iris')">🌸 Iris</button>
+      <button class="sample-chip" onclick="loadSample('tips')">🍽️ Tips</button>
+      <button class="sample-chip" onclick="loadSample('mpg')">🚗 MPG</button>
+    </div>
+  </div>
+
+  <!-- Insights -->
+  <div class="card" id="insightsCard" style="display:none">
+    <div class="card-header">
+      <div class="card-title">Smart Insights</div>
+      <span class="badge badge-blue" id="insightCount">—</span>
+    </div>
+    <div id="insightsContainer"></div>
+  </div>
+
+  <!-- Business dashboard -->
+  <div class="card" id="businessCard" style="display:none">
+    <div class="card-header">
+      <div class="card-title">Business Dashboard</div>
+    </div>
+    <div id="kpiContainer"></div>
+    <div id="recommendationsContainer"></div>
+    <div id="risksContainer"></div>
+    <div id="predictiveContainer"></div>
+  </div>
+
+  <!-- Dataset overview -->
+  <div class="card" id="overviewCard" style="display:none">
+    <div class="card-header">
+      <div class="card-title">Dataset Overview</div>
+    </div>
+    <div id="dataInfo"></div>
+    <div id="dataPreview"></div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════
+     EDA TAB
+════════════════════════════════════════════ -->
+<div id="eda-tab" class="tab-content">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Exploratory Analysis</div>
+      <div class="page-sub">Automated statistical report</div>
+    </div>
+  </div>
+  <div class="card">
+    <div id="edaReport"><div class="alert alert-info">Load a dataset to generate the EDA report.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VISUALIZATIONS TAB
+════════════════════════════════════════════ -->
+<div id="visualizations-tab" class="tab-content">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Visualizations</div>
+      <div class="page-sub">Auto-generated charts for your dataset</div>
+    </div>
+  </div>
+  <div class="card">
+    <div id="allVisualizations"><div class="alert alert-info">Load a dataset to generate visualizations.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TRAINING TAB
+════════════════════════════════════════════ -->
+<div id="training-tab" class="tab-content">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Model Training</div>
+      <div class="page-sub">Configure and launch AutoML</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Configuration</div></div>
+
+      <div class="form-row">
+        <label class="form-label">Target Column</label>
+        <select id="targetColumn">
+          <option value="">Select target column…</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">Train / Test Split</label>
+        <div class="range-row">
+          <input type="range" id="trainSize" min="0.5" max="0.9" step="0.05" value="0.8">
+          <span class="range-label" id="trainSizeValue">80%</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">Cross-Validation Folds</label>
+        <select id="foldCount">
+          <option value="3">3 folds</option>
+          <option value="5" selected>5 folds</option>
+          <option value="10">10 folds</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label class="checkbox-row">
+          <input type="checkbox" id="normalize" checked>
+          Normalize data
+        </label>
+        <label class="checkbox-row">
+          <input type="checkbox" id="removeOutliers">
+          Remove outliers
+        </label>
+      </div>
+
+      <button class="btn" onclick="startTraining()" id="trainBtn">
+        ⚡ Start Training
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">Status</div></div>
+      <div id="targetInfo"><div class="alert alert-info">Select a target column to analyse it.</div></div>
+      <div id="trainingProgress" style="display:none">
+        <div class="progress-wrap"><div class="progress-bar" id="trainingFill"></div></div>
+      </div>
+      <div id="trainingStatus"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     RESULTS TAB
+════════════════════════════════════════════ -->
+<div id="results-tab" class="tab-content">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Model Results</div>
+      <div class="page-sub">Performance comparison across algorithms</div>
+    </div>
+  </div>
+  <div class="card">
+    <div id="resultsSummary"><div class="alert alert-info">Train a model first to see results.</div></div>
+    <div id="resultsTable"></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="downloadResults()">↓ Export CSV</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     HISTORY TAB
+════════════════════════════════════════════ -->
+<div id="history-tab" class="tab-content">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Training History</div>
+      <div class="page-sub">All past experiments</div>
+    </div>
+  </div>
+  <div class="card">
+    <div id="historyContainer"><div class="alert alert-info">No runs yet.</div></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="downloadHistory()">↓ Export CSV</button>
+      <button class="btn btn-danger" onclick="clearHistory()">✕ Clear History</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrapper -->
+
+<script>
+/* ══════════════════════════════════
+   HELPERS
+══════════════════════════════════ */
+const $ = id => document.getElementById(id);
+
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  const el = $(`${name}-tab`);
+  if (el) el.classList.add('active');
+
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const order = ['dashboard','eda','visualizations','training','results','history'];
+  const idx   = order.indexOf(name);
+  const btns  = document.querySelectorAll('.nav-btn');
+  if (idx >= 0 && btns[idx]) btns[idx].classList.add('active');
+
+  if (name === 'history') loadHistory();
+  if (name === 'results')  loadResults();
+}
+
+function showLoading()  { $('loadingOverlay').classList.add('show'); }
+function hideLoading()  { $('loadingOverlay').classList.remove('show'); }
+
+function toast(type, msg) {
+  const stack = $('toastStack');
+  const t = document.createElement('div');
+  const icons = { success:'✓', error:'✕', warning:'⚠', info:'ℹ' };
+  t.className = `toast ${type}`;
+  t.innerHTML = `<span class="toast-icon">${icons[type]||'ℹ'}</span><span>${msg}</span>`;
+  stack.appendChild(t);
+  setTimeout(() => t.remove(), 5000);
+}
+
+// Keep backward compat
+function showAlert(type, msg) { toast(type === 'error' ? 'error' : type === 'warning' ? 'warning' : type === 'success' ? 'success' : 'info', msg); }
+
+/* ══════════════════════════════════
+   UPLOAD / SAMPLE
+══════════════════════════════════ */
+const uploadArea = $('uploadArea');
+const fileInput  = $('fileInput');
+
+uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+uploadArea.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadArea.classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if (f) uploadFile(f);
+});
+fileInput.addEventListener('change', e => { if (e.target.files[0]) uploadFile(e.target.files[0]); });
+
+async function uploadFile(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  showLoading();
+  $('progressWrap').style.display = 'block';
+  try {
+    const r = await fetch('/api/upload', { method:'POST', body: fd });
+    const data = await r.json();
+    if (data.success) { toast('success', data.message); await loadAllData(); }
+    else toast('error', data.error);
+  } catch(e) { toast('error', 'Upload failed: ' + e.message); }
+  finally { hideLoading(); $('progressWrap').style.display = 'none'; }
+}
+
+async function loadSample(name) {
+  showLoading();
+  try {
+    const r = await fetch('/api/load-sample', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({sample: name})
+    });
+    const data = await r.json();
+    if (data.success) { toast('success', `Loaded "${name}" dataset`); await loadAllData(); }
+    else toast('error', data.error);
+  } catch(e) { toast('error', 'Failed to load sample: ' + e.message); }
+  finally { hideLoading(); }
+}
+
+async function loadAllData() {
+  await loadDatasetInfo();
+  await loadInsights();
+  await loadBusinessDashboard();
+  await loadAutoEDA();
+  await loadAllVisualizations();
+  updateTargetColumnSelect();
+}
+
+/* ══════════════════════════════════
+   DATASET INFO
+══════════════════════════════════ */
+async function loadDatasetInfo() {
+  try {
+    const info = await fetch('/api/data-info').then(r => r.json());
+
+    $('overviewCard').style.display = 'block';
+    $('insightsCard').style.display = 'block';
+    $('businessCard').style.display = 'block';
+
+    $('dataInfo').innerHTML = `
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-label">Rows</div><div class="kpi-value">${info.rows.toLocaleString()}</div></div>
+        <div class="kpi"><div class="kpi-label">Columns</div><div class="kpi-value">${info.columns}</div></div>
+        <div class="kpi"><div class="kpi-label">Numeric</div><div class="kpi-value">${info.num_cols}</div></div>
+        <div class="kpi"><div class="kpi-label">Categorical</div><div class="kpi-value">${info.cat_cols}</div></div>
+        <div class="kpi"><div class="kpi-label">Health</div><div class="kpi-value">${info.health_score}%</div></div>
+      </div>
+      <div class="section-head">Column Details</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Column</th><th>Type</th><th>Non-Null</th><th>Null %</th></tr></thead>
+          <tbody>
+            ${info.column_names.slice(0,10).map(col => `
+              <tr>
+                <td>${col}</td>
+                <td><span class="badge badge-blue">${info.dtypes[col]}</span></td>
+                <td>${(info.rows - info.null_count).toLocaleString()}</td>
+                <td>${info.null_pct}%</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        ${info.column_names.length > 10 ? `<p style="font-size:.75rem;color:var(--text-3);margin-top:.75rem">+ ${info.column_names.length-10} more columns</p>` : ''}
+      </div>
+    `;
+
+    await loadDataPreview();
+  } catch(e) {
+    console.error(e);
+    $('dataInfo').innerHTML = '<div class="alert alert-error">Failed to load dataset info.</div>';
+  }
+}
+
+async function loadDataPreview() {
+  try {
+    const preview = await fetch('/api/data-preview?rows=8').then(r => r.json());
+    $('dataPreview').innerHTML = `
+      <div class="section-head">Preview — first ${preview.data.length} rows</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>${preview.columns.map(c => `<th>${c}</th>`).join('')}</tr></thead>
+          <tbody>
+            ${preview.data.map(row => `
+              <tr>${preview.columns.map(c => `<td>${row[c] !== null ? String(row[c]).substring(0,30) : '—'}</td>`).join('')}</tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  } catch(e) { console.error(e); }
+}
+
+/* ══════════════════════════════════
+   INSIGHTS
+══════════════════════════════════ */
+async function loadInsights() {
+  try {
+    const data = await fetch('/api/insights').then(r => r.json());
+    $('insightCount').textContent = data.insights.length;
+    $('insightsContainer').innerHTML = data.insights.map(ins => `
+      <div class="insight ${ins.severity}" onclick="showAlert('info','${ins.action}')">
+        <div class="insight-dot"></div>
+        <div class="insight-body">
+          <div class="insight-title">${ins.title}</div>
+          <div class="insight-desc">${ins.description}</div>
+          <div class="insight-meta">${ins.metric}</div>
+        </div>
+      </div>
+    `).join('') || '<p style="color:var(--text-3)">No insights available.</p>';
+  } catch(e) { console.error(e); }
+}
+
+/* ══════════════════════════════════
+   BUSINESS DASHBOARD
+══════════════════════════════════ */
+async function loadBusinessDashboard() {
+  try {
+    const d = await fetch('/api/business-dashboard').then(r => r.json());
+
+    if (d.kpis?.length) {
+      $('kpiContainer').innerHTML = `
+        <div class="kpi-grid">
+          ${d.kpis.map(k => `
+            <div class="kpi">
+              <div class="kpi-label">${k.title}</div>
+              <div class="kpi-value">${k.value}</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    if (d.recommendations?.length) {
+      $('recommendationsContainer').innerHTML = `
+        <div class="section-head">Recommendations</div>
+        ${d.recommendations.map(r => `
+          <div class="insight info">
+            <div class="insight-dot"></div>
+            <div class="insight-body">
+              <div class="insight-title">${r.title}</div>
+              <div class="insight-desc">${r.description}</div>
+              <div class="insight-meta">Priority: ${r.priority} · Impact: ${r.impact}</div>
+            </div>
+          </div>
+        `).join('')}
+      `;
+    }
+
+    if (d.risks?.length) {
+      $('risksContainer').innerHTML = `
+        <div class="section-head">Risk Assessment</div>
+        ${d.risks.map(r => `
+          <div class="insight ${r.severity === 'High' ? 'critical' : 'warning'}">
+            <div class="insight-dot"></div>
+            <div class="insight-body">
+              <div class="insight-title">${r.title}</div>
+              <div class="insight-desc">${r.description}</div>
+              <div class="insight-meta">Mitigation: ${r.mitigation}</div>
+            </div>
+          </div>
+        `).join('')}
+      `;
+    }
+
+    if (d.predictive_insights?.length) {
+      $('predictiveContainer').innerHTML = `
+        <div class="section-head">Predictive Insights</div>
+        ${d.predictive_insights.map(p => `
+          <div class="insight info">
+            <div class="insight-dot"></div>
+            <div class="insight-body">
+              <div class="insight-title">${p.title}</div>
+              <div class="insight-desc">${p.description}</div>
+              <div class="insight-meta">Confidence: ${p.confidence}</div>
+            </div>
+          </div>
+        `).join('')}
+      `;
+    }
+  } catch(e) { console.error(e); }
+}
+
+/* ══════════════════════════════════
+   AUTO EDA
+══════════════════════════════════ */
+async function loadAutoEDA() {
+  try {
+    const r = await fetch('/api/auto-eda').then(r => r.json());
+    const ov = r.dataset_overview || {};
+    const dq = r.data_quality    || {};
+
+    let html = `
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-label">Rows</div><div class="kpi-value">${(ov.rows||0).toLocaleString()}</div></div>
+        <div class="kpi"><div class="kpi-label">Columns</div><div class="kpi-value">${ov.columns||0}</div></div>
+        <div class="kpi"><div class="kpi-label">Missing Cells</div><div class="kpi-value">${(ov.missing_cells||0).toLocaleString()}</div></div>
+        <div class="kpi"><div class="kpi-label">Missing %</div><div class="kpi-value">${ov.missing_percentage||0}%</div></div>
+        <div class="kpi"><div class="kpi-label">Duplicates</div><div class="kpi-value">${(ov.duplicate_rows||0).toLocaleString()}</div></div>
+        <div class="kpi"><div class="kpi-label">Memory</div><div class="kpi-value">${ov.memory_usage_mb||0} MB</div></div>
+      </div>
+
+      <div class="section-head">Data Quality Score</div>
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+        <div style="font-size:2rem;font-weight:800;color:var(--accent)">${dq.quality_score||0}%</div>
+        <span class="badge badge-green">Grade ${dq.quality_grade||'?'}</span>
+      </div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:${dq.quality_score||0}%"></div></div>
+    `;
+
+    if (dq.issues?.length)           html += `<div class="alert alert-warning" style="margin-top:1rem"><strong>Issues:</strong><br>${dq.issues.map(i=>`· ${i}`).join('<br>')}</div>`;
+    if (dq.recommendations?.length)  html += `<div class="alert alert-success"><strong>Recommendations:</strong><br>${dq.recommendations.map(r=>`· ${r}`).join('<br>')}</div>`;
+
+    if (r.variable_summaries?.length) {
+      html += `<div class="section-head">Variable Summaries</div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Column</th><th>Type</th><th>Missing %</th><th>Unique</th>
+            ${'mean' in r.variable_summaries[0] ? '<th>Mean</th><th>Std</th><th>Min</th><th>Max</th>' : '<th>Most Frequent</th><th>Freq %</th>'}
+          </tr></thead>
+          <tbody>
+            ${r.variable_summaries.slice(0,15).map(v => `
+              <tr>
+                <td>${v.name}</td>
+                <td><span class="badge badge-blue">${v.type}</span></td>
+                <td>${v.missing_percentage||0}%</td>
+                <td>${(v.unique||0).toLocaleString()}</td>
+                ${'mean' in v
+                  ? `<td>${v.mean?.toFixed(2)||'—'}</td><td>${v.std?.toFixed(2)||'—'}</td><td>${v.min?.toFixed(2)||'—'}</td><td>${v.max?.toFixed(2)||'—'}</td>`
+                  : `<td>${v.most_frequent||'—'}</td><td>${v.most_frequent_percentage||0}%</td>`}
+              </tr>
+            `).join('')}
+          </tbody>
+        </table></div>`;
+    }
+
+    if (r.correlation_analysis?.has_correlations && r.correlation_analysis.top_correlations) {
+      html += `<div class="section-head">Top Correlations</div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Feature A</th><th>Feature B</th><th>Correlation</th></tr></thead>
+          <tbody>
+            ${r.correlation_analysis.top_correlations.slice(0,10).map(c => `
+              <tr>
+                <td>${c.feature1}</td>
+                <td>${c.feature2}</td>
+                <td><span class="badge ${Math.abs(c.correlation)>0.7?'badge-yellow':'badge-green'}">${c.correlation}</span></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table></div>`;
+    }
+
+    if (r.outlier_analysis?.has_outliers && r.outlier_analysis.outliers_by_column) {
+      html += `<div class="section-head">Outlier Analysis</div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Column</th><th>Count</th><th>Percentage</th></tr></thead>
+          <tbody>
+            ${r.outlier_analysis.outliers_by_column.slice(0,10).map(o => `
+              <tr>
+                <td>${o.column}</td>
+                <td>${(o.outlier_count||0).toLocaleString()}</td>
+                <td>${o.outlier_percentage||0}%</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table></div>`;
+    }
+
+    $('edaReport').innerHTML = html;
+  } catch(e) {
+    console.error(e);
+    $('edaReport').innerHTML = '<div class="alert alert-error">Failed to load EDA. Please load a dataset first.</div>';
+  }
+}
+
+/* ══════════════════════════════════
+   VISUALIZATIONS
+══════════════════════════════════ */
+async function loadAllVisualizations() {
+  try {
+    const vizs = await fetch('/api/all-visualizations').then(r => r.json());
+    let html = '';
+    let n = 0;
+
+    for (const [key, fig] of Object.entries(vizs)) {
+      if (!fig) continue;
+      const id = `viz_${key}_${Date.now()}_${n++}`;
+      const title = key.replace(/_/g,' ').replace(/\b\w/g, l=>l.toUpperCase());
+      html += `<div class="viz-box"><div class="viz-label">${title}</div><div id="${id}" style="height:420px"></div></div>`;
+      setTimeout(() => {
+        try {
+          const parsed = JSON.parse(fig);
+          // Dark theme overrides
+          parsed.layout = Object.assign({}, parsed.layout, {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { color: '#8a97a8', family: 'JetBrains Mono' },
+            gridcolor: '#1e2630',
+            xaxis: Object.assign({}, parsed.layout?.xaxis, { gridcolor:'#1e2630', linecolor:'#1e2630' }),
+            yaxis: Object.assign({}, parsed.layout?.yaxis, { gridcolor:'#1e2630', linecolor:'#1e2630' }),
+          });
+          Plotly.newPlot(id, parsed.data, parsed.layout, { responsive:true, displayModeBar:false });
+        } catch(e) { console.error(e); }
+      }, 100);
+    }
+
+    $('allVisualizations').innerHTML = n ? html : '<div class="alert alert-info">No visualizations available for this dataset.</div>';
+  } catch(e) {
+    console.error(e);
+    $('allVisualizations').innerHTML = '<div class="alert alert-error">Failed to load visualizations.</div>';
+  }
+}
+
+/* ══════════════════════════════════
+   TRAINING
+══════════════════════════════════ */
+function updateTargetColumnSelect() {
+  fetch('/api/data-info').then(r => r.json()).then(info => {
+    const sel = $('targetColumn');
+    sel.innerHTML = '<option value="">Select target column…</option>' +
+      info.column_names.map(c => `<option value="${c}">${c}</option>`).join('');
+  }).catch(console.error);
+}
+
+$('targetColumn').addEventListener('change', async function() {
+  const target = this.value;
+  if (!target) return;
+  try {
+    const r = await fetch('/api/detect-target', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({target})
+    });
+    const data = await r.json();
+    $('targetInfo').innerHTML = `
+      <div class="alert alert-success">
+        <strong>Type:</strong> ${data.type_label} · <strong>Unique values:</strong> ${data.unique_values}
+      </div>
+    `;
+  } catch(e) { console.error(e); }
+});
+
+async function startTraining() {
+  const target = $('targetColumn').value;
+  if (!target) { toast('warning','Select a target column first.'); return; }
+
+  showLoading();
+  $('trainingProgress').style.display = 'block';
+
+  try {
+    const r = await fetch('/api/train', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        target,
+        train_size:    $('trainSize').value,
+        fold:          $('foldCount').value,
+        normalize:     $('normalize').checked,
+        remove_outliers: $('removeOutliers').checked,
+        max_models:    10
+      })
+    });
+    const data = await r.json();
+    if (data.success) {
+      toast('success', `Done in ${data.elapsed}. Best: ${data.best_model} (${data.best_score})`);
+      await loadResults();
+      showTab('results');
+    } else {
+      toast('error', data.message || data.error);
+    }
+  } catch(e) { toast('error', 'Training failed: ' + e.message); }
+  finally { hideLoading(); $('trainingProgress').style.display = 'none'; }
+}
+
+/* ══════════════════════════════════
+   RESULTS
+══════════════════════════════════ */
+async function loadResults() {
+  try {
+    const r = await fetch('/api/results').then(r => r.json());
+    if (!r.exists) {
+      $('resultsSummary').innerHTML = '<div class="alert alert-info">No results yet. Train a model to see results.</div>';
+      $('resultsTable').innerHTML = '';
+      return;
+    }
+
+    const top = r.top_models[0] || {};
+    const numCol = r.num_columns?.[0] || '';
+
+    $('resultsSummary').innerHTML = `
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-label">Best Model</div><div class="kpi-value" style="font-size:1.1rem">${top.Model || '—'}</div></div>
+        <div class="kpi"><div class="kpi-label">Best Score</div><div class="kpi-value">${top[numCol]?.toFixed(4) || '—'}</div></div>
+        <div class="kpi"><div class="kpi-label">Train Time</div><div class="kpi-value">${(r.training_time||0).toFixed(1)}s</div></div>
+        <div class="kpi"><div class="kpi-label">CV Folds</div><div class="kpi-value">${r.folds_used||5}</div></div>
+      </div>
+    `;
+
+    $('resultsTable').innerHTML = `
+      <div class="section-head">Model Comparison</div>
+      <div class="tbl-wrap"><table>
+        <thead><tr>${r.columns.map(c => `<th>${c}</th>`).join('')}</tr></thead>
+        <tbody>
+          ${r.top_models.map(m => `
+            <tr>${r.columns.map(c => {
+              let v = m[c];
+              if (typeof v === 'number') v = v.toFixed(4);
+              return `<td>${v}</td>`;
+            }).join('')}</tr>
+          `).join('')}
+        </tbody>
+      </table></div>
+    `;
+  } catch(e) {
+    console.error(e);
+    $('resultsSummary').innerHTML = '<div class="alert alert-error">Failed to load results.</div>';
+  }
+}
+
+function downloadResults()  { window.location.href = '/api/download-results'; }
+function downloadHistory()  { window.location.href = '/api/download-history'; }
+
+async function clearHistory() {
+  if (!confirm('Clear all training history?')) return;
+  await fetch('/api/clear-session', { method:'POST' });
+  loadHistory();
+  toast('success','History cleared.');
+}
+
+/* ══════════════════════════════════
+   HISTORY
+══════════════════════════════════ */
+async function loadHistory() {
+  try {
+    const data = await fetch('/api/history').then(r => r.json());
+    if (!data.history?.length) {
+      $('historyContainer').innerHTML = '<div class="alert alert-info">No training history yet.</div>';
+      return;
+    }
+    $('historyContainer').innerHTML = `
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Time</th><th>Dataset</th><th>Type</th><th>Best Model</th><th>Score</th><th>Rows</th></tr></thead>
+        <tbody>
+          ${data.history.map(e => `
+            <tr>
+              <td>${e.time}</td>
+              <td>${e.dataset}</td>
+              <td><span class="badge badge-blue">${e.problem_type}</span></td>
+              <td>${e.best_model}</td>
+              <td>${e.score}</td>
+              <td>${e.rows?.toLocaleString() || '—'}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table></div>
+    `;
+  } catch(e) { console.error(e); }
+}
+
+/* ══════════════════════════════════
+   INIT
+══════════════════════════════════ */
+$('trainSize').addEventListener('input', function() {
+  $('trainSizeValue').textContent = Math.round(this.value * 100) + '%';
+});
+
+loadHistory();
+
+(async () => {
+  try {
+    const r = await fetch('/api/data-info');
+    if (r.ok) {
+      const info = await r.json();
+      if (info.rows > 0) await loadAllData();
+    }
+  } catch(e) {}
+})();
+</script>
+</body>
+</html>
