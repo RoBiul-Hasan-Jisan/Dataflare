@@ -471,7 +471,7 @@ def create_all_visualizations(df):
             hoverongaps=False
         ))
         fig_corr.update_layout(
-            title='📊 Feature Correlation Matrix',
+            title=' Feature Correlation Matrix',
             height=600,
             width=800,
             xaxis_tickangle=-45,
@@ -492,7 +492,7 @@ def create_all_visualizations(df):
                 histnorm='probability density'
             ))
         fig_dist.update_layout(
-            title='📈 Feature Distributions (Density)',
+            title=' Feature Distributions (Density)',
             barmode='overlay',
             height=500,
             legend_title="Features",
@@ -511,7 +511,7 @@ def create_all_visualizations(df):
                 boxpoints='outliers'
             ))
         fig_box.update_layout(
-            title='📦 Box Plot Analysis (with Mean & Standard Deviation)',
+            title=' Box Plot Analysis (with Mean & Standard Deviation)',
             height=500,
             showlegend=True,
             font=dict(size=12)
@@ -549,7 +549,7 @@ def create_all_visualizations(df):
             zmax=1
         ))
         fig_missing.update_layout(
-            title='🔍 Missing Values Pattern',
+            title=' Missing Values Pattern',
             height=400 + len(missing_matrix.columns) * 20,
             width=900,
             font=dict(size=10)
@@ -581,7 +581,7 @@ def create_all_visualizations(df):
                     hoverinfo='text+x+y'
                 ))
                 fig_pca.update_layout(
-                    title=f'🎯 PCA Projection ({pca.explained_variance_ratio_[0]:.1%} / {pca.explained_variance_ratio_[1]:.1%} variance)',
+                    title=f' PCA Projection ({pca.explained_variance_ratio_[0]:.1%} / {pca.explained_variance_ratio_[1]:.1%} variance)',
                     xaxis_title='First Principal Component',
                     yaxis_title='Second Principal Component',
                     height=500,
@@ -615,7 +615,7 @@ def create_all_visualizations(df):
                     hoverinfo='text+x+y'
                 ))
                 fig_tsne.update_layout(
-                    title='🌀 t-SNE Visualization (2D Projection)',
+                    title=' t-SNE Visualization (2D Projection)',
                     xaxis_title='t-SNE Component 1',
                     yaxis_title='t-SNE Component 2',
                     height=500,
@@ -644,7 +644,7 @@ def create_all_visualizations(df):
                     marker=dict(size=4)
                 ))
                 fig_time.update_layout(
-                    title=f'📅 Time Series: {value_col} over Time',
+                    title=f' Time Series: {value_col} over Time',
                     xaxis_title='Time',
                     yaxis_title=value_col,
                     height=400,
