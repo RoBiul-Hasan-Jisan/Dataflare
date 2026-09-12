@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Avenir Next", "Segoe UI Semibold", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Cascadia Code", ui-monospace, Menlo, Consolas, monospace;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: #0E1116;
+  background-image:
+    radial-gradient(1200px 600px at 100% -10%, rgba(255, 90, 31, 0.07), transparent 60%),
+    radial-gradient(900px 500px at -10% 20%, rgba(91, 156, 255, 0.05), transparent 60%);
+  color: #E9EDF2;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #262E39 transparent;
+}
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #262E39; border-radius: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+::selection {
+  background: rgba(255, 90, 31, 0.35);
+}
+
+:focus-visible {
+  outline: 2px solid #FF5A1F;
+  outline-offset: 2px;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}

@@ -1,0 +1,113 @@
+<svg width='1280' height='800' viewBox='0 0 1280 800' xmlns='http://www.w3.org/2000/svg'>
+    <defs>
+      <radialGradient id='glow1' cx='100%' cy='0%' r='60%'>
+        <stop offset='0%' stop-color='#FF5A1F' stop-opacity='0.08'/>
+        <stop offset='100%' stop-color='#FF5A1F' stop-opacity='0'/>
+      </radialGradient>
+    </defs>
+    <rect width='1280' height='800' fill='#0E1116'/>
+    <rect width='1280' height='800' fill='url(#glow1)'/>
+    
+    <rect x='0' y='0' width='248' height='800' fill='#10141A'/>
+    <rect x='248' y='0' width='1' height='800' fill='#232B35'/>
+    <rect x='0' y='0' width='248' height='64' fill='#10141A'/>
+    <rect x='0' y='64' width='248' height='1' fill='#232B35'/>
+    <path d='M24 12L26.4 20L34 22L26.4 24L24 32L21.6 24L14 22L21.6 20Z' fill='#FF5A1F' transform='translate(4,4) scale(0.85)'/>
+    <text x='48' y='30' font-family='Helvetica,Arial,sans-serif' font-size='17' font-weight='700' fill='#E9EDF2' letter-spacing='-0.3'>DataFlare</text>
+    <text x='48' y='44' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5C6774'>ml studio</text>
+    
+        
+        <g transform='translate(24,94)' stroke='#9BA6B4' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M4 13h5v6H4zM4 4h5v6H4zM12 4h8v9h-8zM12 15h8v4h-8z' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='101' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#9BA6B4' font-weight='400'>Overview</text>
+        
+        
+        <g transform='translate(24,138)' stroke='#9BA6B4' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M12 4l4 4h-3v6h-2V8H8zM5 18h14v2H5z' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='145' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#9BA6B4' font-weight='400'>Upload data</text>
+        
+        
+        <g transform='translate(24,182)' stroke='#9BA6B4' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M4 20V10M10 20V4M16 20v-7M22 20V8' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='189' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#9BA6B4' font-weight='400'>Explore &amp; EDA</text>
+        
+        <rect x='0' y='220' width='248' height='40' fill='#1D232C'/><rect x='0' y='220' width='2.5' height='40' fill='#FF5A1F'/>
+        <g transform='translate(24,226)' stroke='#E9EDF2' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M12 3a4 4 0 0 1 4 4v1h1a3 3 0 0 1 0 6h-1v1a4 4 0 0 1-8 0v-1H7a3 3 0 0 1 0-6h1V7a4 4 0 0 1 4-4z' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='233' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#E9EDF2' font-weight='600'>Train a model</text>
+        
+        
+        <g transform='translate(24,270)' stroke='#9BA6B4' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M8 21h8M12 17v4M6 3h12v5a6 6 0 0 1-12 0V3zM3 6h3M18 6h3' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='277' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#9BA6B4' font-weight='400'>Results</text>
+        
+        
+        <g transform='translate(24,314)' stroke='#9BA6B4' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M12 8v4l3 2M12 3a9 9 0 1 0 9 9' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='321' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#9BA6B4' font-weight='400'>History</text>
+        
+    <rect x='0' y='751' width='248' height='1' fill='#232B35'/>
+    <circle cx='24' cy='775' r='3' fill='#31D8A6'/>
+    <text x='34' y='779' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11' fill='#5C6774'>Dataset loaded</text>
+    
+    <rect x='248' y='0' width='1032' height='64' fill='#0E1116'/>
+    <rect x='248' y='64' width='1032' height='1' fill='#232B35'/>
+    <text x='280' y='37' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13' fill='#9BA6B4'>titanic.csv  ·  891 rows  ·  12 columns</text>
+    
+        <g transform='translate(1150,32)' stroke='#5C6774' stroke-width='1.5' fill='none'>
+          <path d='M0 3h14M4 3V1.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1V3M2 3l1 11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-11' stroke-linecap='round' stroke-linejoin='round'/>
+        </g>
+        <text x='1174' y='47' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#5C6774'>Clear session</text>
+        
+    <text x='280' y='112' font-family='Helvetica,Arial,sans-serif' font-size='22' font-weight='700' fill='#E9EDF2'>Train a model</text><text x='280' y='134' font-family='Inter,Helvetica,Arial,sans-serif' font-size='12.5' fill='#5C6774'>Pick what you want to predict. DataFlare compares a shortlist of algorithms and ranks them for you.</text>
+    <rect x='280' y='156' width='620' height='140' rx='5' fill='#161B22' stroke='#232B35'/>
+    
+        <text x='300' y='186' font-family='Helvetica,Arial,sans-serif' font-size='14.5' font-weight='600' fill='#E9EDF2'>Target column</text>
+        <rect x='280' y='212' width='620' height='1' fill='#1B2129'/>
+    <g transform='translate(300,232)'>
+<rect x='0' y='0' width='580' height='38' rx='4' fill='#1B2129' stroke='#232B35'/>
+<text x='16' y='24' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13' fill='#E9EDF2'>Survived</text>
+
+    <rect x='0' y='52' width='128' height='20' rx='3' fill='#5B9CFF' opacity='0.15'/>
+    <text x='64.0' y='66' font-family='Inter,Helvetica,Arial,sans-serif' font-size='10.5' font-weight='600' fill='#5B9CFF' text-anchor='middle'>Classification</text>
+    
+<text x='120' y='66' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#5C6774'>detected · 2 unique values</text>
+</g>
+    
+    <rect x='280' y='316' width='620' height='260' rx='5' fill='#161B22' stroke='#232B35'/>
+    
+        <text x='300' y='346' font-family='Helvetica,Arial,sans-serif' font-size='14.5' font-weight='600' fill='#E9EDF2'>Training options</text>
+        <rect x='280' y='372' width='620' height='1' fill='#1B2129'/>
+    <g transform='translate(300,392)'>
+<text x='0' y='6' font-family='Inter,Helvetica,Arial,sans-serif' font-size='12.5' fill='#E9EDF2'>Train / test split — 80% train</text>
+<rect x='0' y='16' width='580' height='4' rx='2' fill='#1B2129'/>
+<rect x='0' y='16' width='464' height='4' rx='2' fill='#FF5A1F'/>
+<circle cx='464' cy='18' r='7' fill='#FF5A1F'/>
+
+<text x='0' y='56' font-family='Inter,Helvetica,Arial,sans-serif' font-size='12.5' fill='#E9EDF2'>Cross-validation folds — 5</text>
+<rect x='0' y='66' width='580' height='4' rx='2' fill='#1B2129'/>
+<rect x='0' y='66' width='330' height='4' rx='2' fill='#FF5A1F'/>
+<circle cx='330' cy='68' r='7' fill='#FF5A1F'/>
+
+<text x='0' y='104' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13' fill='#E9EDF2'>Normalize features</text>
+<text x='0' y='120' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11' fill='#5C6774'>Recommended for most datasets</text>
+<rect x='540' y='96' width='40' height='22' rx='11' fill='#FF5A1F'/>
+<circle cx='568' cy='107' r='8' fill='white'/>
+
+<text x='0' y='160' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13' fill='#E9EDF2'>Remove outliers</text>
+<text x='0' y='176' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11' fill='#5C6774'>Drops extreme values before training</text>
+<rect x='540' y='152' width='40' height='22' rx='11' fill='#232B35'/>
+<circle cx='552' cy='163' r='8' fill='#5C6774'/>
+</g>
+    
+<rect x='280' y='596' width='620' height='42' rx='5' fill='#FF5A1F'/>
+<g transform='translate(500,609)' fill='white'><path d='M8 0l1.5 4.5L14 6l-4.5 1.5L8 12l-1.5-4.5L2 6l4.5-1.5z' transform='scale(0.9)'/></g>
+<text x='640' y='623' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' font-weight='600' fill='white'>Start training</text>
+
+    </svg>

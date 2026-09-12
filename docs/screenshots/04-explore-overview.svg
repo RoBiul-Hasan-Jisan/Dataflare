@@ -1,0 +1,103 @@
+<svg width='1280' height='800' viewBox='0 0 1280 800' xmlns='http://www.w3.org/2000/svg'>
+    <defs>
+      <radialGradient id='glow1' cx='100%' cy='0%' r='60%'>
+        <stop offset='0%' stop-color='#FF5A1F' stop-opacity='0.08'/>
+        <stop offset='100%' stop-color='#FF5A1F' stop-opacity='0'/>
+      </radialGradient>
+    </defs>
+    <rect width='1280' height='800' fill='#0E1116'/>
+    <rect width='1280' height='800' fill='url(#glow1)'/>
+    
+    <rect x='0' y='0' width='248' height='800' fill='#10141A'/>
+    <rect x='248' y='0' width='1' height='800' fill='#232B35'/>
+    <rect x='0' y='0' width='248' height='64' fill='#10141A'/>
+    <rect x='0' y='64' width='248' height='1' fill='#232B35'/>
+    <path d='M24 12L26.4 20L34 22L26.4 24L24 32L21.6 24L14 22L21.6 20Z' fill='#FF5A1F' transform='translate(4,4) scale(0.85)'/>
+    <text x='48' y='30' font-family='Helvetica,Arial,sans-serif' font-size='17' font-weight='700' fill='#E9EDF2' letter-spacing='-0.3'>DataFlare</text>
+    <text x='48' y='44' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5C6774'>ml studio</text>
+    
+        
+        <g transform='translate(24,94)' stroke='#9BA6B4' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M4 13h5v6H4zM4 4h5v6H4zM12 4h8v9h-8zM12 15h8v4h-8z' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='101' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#9BA6B4' font-weight='400'>Overview</text>
+        
+        
+        <g transform='translate(24,138)' stroke='#9BA6B4' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M12 4l4 4h-3v6h-2V8H8zM5 18h14v2H5z' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='145' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#9BA6B4' font-weight='400'>Upload data</text>
+        
+        <rect x='0' y='176' width='248' height='40' fill='#1D232C'/><rect x='0' y='176' width='2.5' height='40' fill='#FF5A1F'/>
+        <g transform='translate(24,182)' stroke='#E9EDF2' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M4 20V10M10 20V4M16 20v-7M22 20V8' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='189' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#E9EDF2' font-weight='600'>Explore &amp; EDA</text>
+        
+        
+        <g transform='translate(24,226)' stroke='#9BA6B4' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M12 3a4 4 0 0 1 4 4v1h1a3 3 0 0 1 0 6h-1v1a4 4 0 0 1-8 0v-1H7a3 3 0 0 1 0-6h1V7a4 4 0 0 1 4-4z' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='233' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#9BA6B4' font-weight='400'>Train a model</text>
+        
+        
+        <g transform='translate(24,270)' stroke='#9BA6B4' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M8 21h8M12 17v4M6 3h12v5a6 6 0 0 1-12 0V3zM3 6h3M18 6h3' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='277' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#9BA6B4' font-weight='400'>Results</text>
+        
+        
+        <g transform='translate(24,314)' stroke='#9BA6B4' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M12 8v4l3 2M12 3a9 9 0 1 0 9 9' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='321' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#9BA6B4' font-weight='400'>History</text>
+        
+    <rect x='0' y='751' width='248' height='1' fill='#232B35'/>
+    <circle cx='24' cy='775' r='3' fill='#31D8A6'/>
+    <text x='34' y='779' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11' fill='#5C6774'>Dataset loaded</text>
+    
+    <rect x='248' y='0' width='1032' height='64' fill='#0E1116'/>
+    <rect x='248' y='64' width='1032' height='1' fill='#232B35'/>
+    <text x='280' y='37' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13' fill='#9BA6B4'>titanic.csv  ·  891 rows  ·  12 columns</text>
+    
+        <g transform='translate(1150,32)' stroke='#5C6774' stroke-width='1.5' fill='none'>
+          <path d='M0 3h14M4 3V1.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1V3M2 3l1 11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-11' stroke-linecap='round' stroke-linejoin='round'/>
+        </g>
+        <text x='1174' y='47' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#5C6774'>Clear session</text>
+        
+    <text x='280' y='112' font-family='Helvetica,Arial,sans-serif' font-size='22' font-weight='700' fill='#E9EDF2'>Explore &amp; EDA</text><text x='280' y='134' font-family='Inter,Helvetica,Arial,sans-serif' font-size='12.5' fill='#5C6774'>Understand your data before you train — types, gaps, and shape.</text><rect x='280' y='152' width='980' height='1' fill='#232B35'/><rect x='280' y='150' width='140' height='2' fill='#FF5A1F'/><text x='296' y='142' font-family='Inter,Helvetica,Arial,sans-serif' font-size='12.5' font-weight='600' fill='#E9EDF2'>Overview &amp; preview</text><text x='450' y='142' font-family='Inter,Helvetica,Arial,sans-serif' font-size='12.5' fill='#5C6774'>Charts</text>
+    <rect x='280' y='176' width='226' height='72' rx='5' fill='#161B22' stroke='#232B35'/>
+    <text x='296' y='200' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11' fill='#5C6774'>Rows</text>
+    <text x='296' y='228' font-family='Helvetica,Arial,sans-serif' font-size='22' font-weight='700' fill='#E9EDF2'>891</text>
+    
+    
+    <rect x='522' y='176' width='226' height='72' rx='5' fill='#161B22' stroke='#232B35'/>
+    <text x='538' y='200' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11' fill='#5C6774'>Columns</text>
+    <text x='538' y='228' font-family='Helvetica,Arial,sans-serif' font-size='22' font-weight='700' fill='#E9EDF2'>12</text>
+    
+    
+    <rect x='764' y='176' width='226' height='72' rx='5' fill='#161B22' stroke='#232B35'/>
+    <text x='780' y='200' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11' fill='#5C6774'>Duplicate rows</text>
+    <text x='780' y='228' font-family='Helvetica,Arial,sans-serif' font-size='22' font-weight='700' fill='#31D8A6'>0</text>
+    
+    
+    <rect x='1006' y='176' width='226' height='72' rx='5' fill='#161B22' stroke='#232B35'/>
+    <text x='1022' y='200' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11' fill='#5C6774'>Missing cells</text>
+    <text x='1022' y='228' font-family='Helvetica,Arial,sans-serif' font-size='22' font-weight='700' fill='#F5B942'>866</text>
+    <text x='1067' y='228' font-family='Inter,Helvetica,Arial,sans-serif' font-size='12' fill='#5C6774'>8.1%</text>
+    
+    <rect x='280' y='272' width='980' height='150' rx='5' fill='#161B22' stroke='#232B35'/>
+    
+        <text x='300' y='302' font-family='Helvetica,Arial,sans-serif' font-size='14.5' font-weight='600' fill='#E9EDF2'>Columns</text>
+        <text x='300' y='318' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#5C6774'>7 numeric · 5 categorical</text><rect x='280' y='342' width='980' height='1' fill='#1B2129'/>
+    <g transform='translate(300,362)'>
+<rect x='0 ' y='0' width='310' height='30' rx='4' fill='none' stroke='#1B2129'/><text x='14' y='20' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>PassengerId</text><text x='296' y='20' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5C6774' text-anchor='end'>int64</text><rect x='326 ' y='0' width='310' height='30' rx='4' fill='none' stroke='#1B2129'/><text x='340' y='20' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>Survived</text><text x='622' y='20' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5C6774' text-anchor='end'>int64</text><rect x='652 ' y='0' width='310' height='30' rx='4' fill='none' stroke='#1B2129'/><text x='666' y='20' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>Pclass</text><text x='948' y='20' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5C6774' text-anchor='end'>int64</text><rect x='0 ' y='40' width='310' height='30' rx='4' fill='none' stroke='#1B2129'/><text x='14' y='60' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>Name</text><text x='296' y='60' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5C6774' text-anchor='end'>object</text><rect x='326 ' y='40' width='310' height='30' rx='4' fill='none' stroke='#1B2129'/><text x='340' y='60' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>Sex</text><text x='622' y='60' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5C6774' text-anchor='end'>object</text><rect x='652 ' y='40' width='310' height='30' rx='4' fill='none' stroke='#1B2129'/><text x='666' y='60' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>Age</text><text x='948' y='60' font-family='Menlo,Consolas,monospace' font-size='10' fill='#5C6774' text-anchor='end'>float64</text>
+</g>
+    
+    <rect x='280' y='442' width='980' height='220' rx='5' fill='#161B22' stroke='#232B35'/>
+    
+        <text x='300' y='472' font-family='Helvetica,Arial,sans-serif' font-size='14.5' font-weight='600' fill='#E9EDF2'>Data preview</text>
+        <text x='300' y='488' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#5C6774'>Showing 6 of 891 rows</text><rect x='280' y='512' width='980' height='1' fill='#1B2129'/>
+    <g transform='translate(300,532)'><rect x='0' y='0' width='940' height='30' fill='#1D232C'/><text x='12' y='19' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11' font-weight='600' fill='#9BA6B4'>PassengerId</text><text x='168.66666666666666' y='19' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11' font-weight='600' fill='#9BA6B4'>Survived</text><text x='325.3333333333333' y='19' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11' font-weight='600' fill='#9BA6B4'>Pclass</text><text x='482.0' y='19' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11' font-weight='600' fill='#9BA6B4'>Sex</text><text x='638.6666666666666' y='19' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11' font-weight='600' fill='#9BA6B4'>Age</text><text x='795.3333333333333' y='19' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11' font-weight='600' fill='#9BA6B4'>Fare</text><rect x='0' y='30' width='940' height='1' fill='#232B35'/><text x='12' y='48' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>1</text><text x='168.66666666666666' y='48' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>0</text><text x='325.3333333333333' y='48' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>3</text><text x='482.0' y='48' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>male</text><text x='638.6666666666666' y='48' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>22.0</text><text x='795.3333333333333' y='48' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>7.25</text><rect x='0' y='58' width='940' height='1' fill='#1B2129'/><rect x='0' y='58' width='940' height='28' fill='#1D232C' opacity='0.35'/><text x='12' y='76' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>2</text><text x='168.66666666666666' y='76' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>1</text><text x='325.3333333333333' y='76' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>1</text><text x='482.0' y='76' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>female</text><text x='638.6666666666666' y='76' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>38.0</text><text x='795.3333333333333' y='76' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>71.28</text><rect x='0' y='86' width='940' height='1' fill='#1B2129'/><text x='12' y='104' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>3</text><text x='168.66666666666666' y='104' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>1</text><text x='325.3333333333333' y='104' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>3</text><text x='482.0' y='104' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>female</text><text x='638.6666666666666' y='104' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>26.0</text><text x='795.3333333333333' y='104' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>7.92</text><rect x='0' y='114' width='940' height='1' fill='#1B2129'/><rect x='0' y='114' width='940' height='28' fill='#1D232C' opacity='0.35'/><text x='12' y='132' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>4</text><text x='168.66666666666666' y='132' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>1</text><text x='325.3333333333333' y='132' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>1</text><text x='482.0' y='132' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>female</text><text x='638.6666666666666' y='132' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>35.0</text><text x='795.3333333333333' y='132' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>53.1</text><rect x='0' y='142' width='940' height='1' fill='#1B2129'/><text x='12' y='160' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>5</text><text x='168.66666666666666' y='160' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>0</text><text x='325.3333333333333' y='160' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>3</text><text x='482.0' y='160' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>male</text><text x='638.6666666666666' y='160' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>35.0</text><text x='795.3333333333333' y='160' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>8.05</text><rect x='0' y='170' width='940' height='1' fill='#1B2129'/><rect x='0' y='170' width='940' height='28' fill='#1D232C' opacity='0.35'/><text x='12' y='188' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>6</text><text x='168.66666666666666' y='188' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>0</text><text x='325.3333333333333' y='188' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>3</text><text x='482.0' y='188' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>male</text><text x='638.6666666666666' y='188' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>—</text><text x='795.3333333333333' y='188' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#E9EDF2'>8.46</text><rect x='0' y='198' width='940' height='1' fill='#1B2129'/></g>
+    
+    </svg>
