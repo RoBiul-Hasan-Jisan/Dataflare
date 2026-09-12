@@ -1,0 +1,99 @@
+<svg width='1280' height='800' viewBox='0 0 1280 800' xmlns='http://www.w3.org/2000/svg'>
+    <defs>
+      <radialGradient id='glow1' cx='100%' cy='0%' r='60%'>
+        <stop offset='0%' stop-color='#FF5A1F' stop-opacity='0.08'/>
+        <stop offset='100%' stop-color='#FF5A1F' stop-opacity='0'/>
+      </radialGradient>
+    </defs>
+    <rect width='1280' height='800' fill='#0E1116'/>
+    <rect width='1280' height='800' fill='url(#glow1)'/>
+    
+    <rect x='0' y='0' width='248' height='800' fill='#10141A'/>
+    <rect x='248' y='0' width='1' height='800' fill='#232B35'/>
+    <rect x='0' y='0' width='248' height='64' fill='#10141A'/>
+    <rect x='0' y='64' width='248' height='1' fill='#232B35'/>
+    <path d='M24 12L26.4 20L34 22L26.4 24L24 32L21.6 24L14 22L21.6 20Z' fill='#FF5A1F' transform='translate(4,4) scale(0.85)'/>
+    <text x='48' y='30' font-family='Helvetica,Arial,sans-serif' font-size='17' font-weight='700' fill='#E9EDF2' letter-spacing='-0.3'>DataFlare</text>
+    <text x='48' y='44' font-family='Menlo,Consolas,monospace' font-size='10.5' fill='#5C6774'>ml studio</text>
+    
+        
+        <g transform='translate(24,94)' stroke='#9BA6B4' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M4 13h5v6H4zM4 4h5v6H4zM12 4h8v9h-8zM12 15h8v4h-8z' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='101' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#9BA6B4' font-weight='400'>Overview</text>
+        
+        
+        <g transform='translate(24,138)' stroke='#9BA6B4' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M12 4l4 4h-3v6h-2V8H8zM5 18h14v2H5z' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='145' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#9BA6B4' font-weight='400'>Upload data</text>
+        
+        <rect x='0' y='176' width='248' height='40' fill='#1D232C'/><rect x='0' y='176' width='2.5' height='40' fill='#FF5A1F'/>
+        <g transform='translate(24,182)' stroke='#E9EDF2' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M4 20V10M10 20V4M16 20v-7M22 20V8' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='189' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#E9EDF2' font-weight='600'>Explore &amp; EDA</text>
+        
+        
+        <g transform='translate(24,226)' stroke='#9BA6B4' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M12 3a4 4 0 0 1 4 4v1h1a3 3 0 0 1 0 6h-1v1a4 4 0 0 1-8 0v-1H7a3 3 0 0 1 0-6h1V7a4 4 0 0 1 4-4z' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='233' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#9BA6B4' font-weight='400'>Train a model</text>
+        
+        
+        <g transform='translate(24,270)' stroke='#9BA6B4' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M8 21h8M12 17v4M6 3h12v5a6 6 0 0 1-12 0V3zM3 6h3M18 6h3' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='277' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#9BA6B4' font-weight='400'>Results</text>
+        
+        
+        <g transform='translate(24,314)' stroke='#9BA6B4' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'>
+          <path d='M12 8v4l3 2M12 3a9 9 0 1 0 9 9' transform='scale(0.72)'/>
+        </g>
+        <text x='54' y='321' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13.5' fill='#9BA6B4' font-weight='400'>History</text>
+        
+    <rect x='0' y='751' width='248' height='1' fill='#232B35'/>
+    <circle cx='24' cy='775' r='3' fill='#31D8A6'/>
+    <text x='34' y='779' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11' fill='#5C6774'>Dataset loaded</text>
+    
+    <rect x='248' y='0' width='1032' height='64' fill='#0E1116'/>
+    <rect x='248' y='64' width='1032' height='1' fill='#232B35'/>
+    <text x='280' y='37' font-family='Inter,Helvetica,Arial,sans-serif' font-size='13' fill='#9BA6B4'>titanic.csv  ·  891 rows  ·  12 columns</text>
+    
+        <g transform='translate(1150,32)' stroke='#5C6774' stroke-width='1.5' fill='none'>
+          <path d='M0 3h14M4 3V1.5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1V3M2 3l1 11a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-11' stroke-linecap='round' stroke-linejoin='round'/>
+        </g>
+        <text x='1174' y='47' font-family='Inter,Helvetica,Arial,sans-serif' font-size='11.5' fill='#5C6774'>Clear session</text>
+        
+    <text x='280' y='112' font-family='Helvetica,Arial,sans-serif' font-size='22' font-weight='700' fill='#E9EDF2'>Explore &amp; EDA</text><text x='280' y='134' font-family='Inter,Helvetica,Arial,sans-serif' font-size='12.5' fill='#5C6774'>Understand your data before you train — types, gaps, and shape.</text><rect x='280' y='152' width='980' height='1' fill='#232B35'/><rect x='430' y='150' width='60' height='2' fill='#FF5A1F'/><text x='296' y='142' font-family='Inter,Helvetica,Arial,sans-serif' font-size='12.5' fill='#5C6774'>Overview &amp; preview</text><text x='450' y='142' font-family='Inter,Helvetica,Arial,sans-serif' font-size='12.5' font-weight='600' fill='#E9EDF2'>Charts</text>
+    <rect x='280' y='176' width='480' height='260' rx='5' fill='#161B22' stroke='#232B35'/>
+    
+        <text x='300' y='206' font-family='Helvetica,Arial,sans-serif' font-size='14.5' font-weight='600' fill='#E9EDF2'>Correlation matrix</text>
+        <rect x='280' y='232' width='480' height='1' fill='#1B2129'/>
+    <g transform='translate(300,252)'>
+<rect x='0' y='0' width='54' height='42' rx='2' fill='#FF5A1F' opacity='0.15'/><rect x='58' y='0' width='54' height='42' rx='2' fill='#5B9CFF' opacity='0.51'/><rect x='116' y='0' width='54' height='42' rx='2' fill='#5B9CFF' opacity='0.27'/><rect x='174' y='0' width='54' height='42' rx='2' fill='#FF5A1F' opacity='0.63'/><rect x='0' y='46' width='54' height='42' rx='2' fill='#5B9CFF' opacity='0.39'/><rect x='58' y='46' width='54' height='42' rx='2' fill='#5B9CFF' opacity='0.15'/><rect x='116' y='46' width='54' height='42' rx='2' fill='#FF5A1F' opacity='0.51'/><rect x='174' y='46' width='54' height='42' rx='2' fill='#5B9CFF' opacity='0.27'/><rect x='0' y='92' width='54' height='42' rx='2' fill='#5B9CFF' opacity='0.63'/><rect x='58' y='92' width='54' height='42' rx='2' fill='#FF5A1F' opacity='0.39'/><rect x='116' y='92' width='54' height='42' rx='2' fill='#5B9CFF' opacity='0.15'/><rect x='174' y='92' width='54' height='42' rx='2' fill='#5B9CFF' opacity='0.51'/><rect x='0' y='138' width='54' height='42' rx='2' fill='#FF5A1F' opacity='0.27'/><rect x='58' y='138' width='54' height='42' rx='2' fill='#5B9CFF' opacity='0.63'/><rect x='116' y='138' width='54' height='42' rx='2' fill='#5B9CFF' opacity='0.39'/><rect x='174' y='138' width='54' height='42' rx='2' fill='#FF5A1F' opacity='0.15'/>
+</g>
+    
+    <rect x='780' y='176' width='480' height='260' rx='5' fill='#161B22' stroke='#232B35'/>
+    
+        <text x='800' y='206' font-family='Helvetica,Arial,sans-serif' font-size='14.5' font-weight='600' fill='#E9EDF2'>Feature distributions</text>
+        <rect x='780' y='232' width='480' height='1' fill='#1B2129'/>
+    <g transform='translate(800,252)'><rect x='10.0' y='152.5' width='40.0' height='47.5' rx='2' fill='#FF5A1F' opacity='0.66'/><rect x='60.0' y='113.6' width='40.0' height='86.4' rx='2' fill='#FF5A1F' opacity='0.75'/><rect x='110.0' y='59.7' width='40.0' height='140.3' rx='2' fill='#FF5A1F' opacity='0.88'/><rect x='160.0' y='10.0' width='40.0' height='190.0' rx='2' fill='#FF5A1F' opacity='1.00'/><rect x='210.0' y='48.9' width='40.0' height='151.1' rx='2' fill='#FF5A1F' opacity='0.91'/><rect x='260.0' y='87.7' width='40.0' height='112.3' rx='2' fill='#FF5A1F' opacity='0.82'/><rect x='310.0' y='118.0' width='40.0' height='82.0' rx='2' fill='#FF5A1F' opacity='0.74'/><rect x='360.0' y='148.2' width='40.0' height='51.8' rx='2' fill='#FF5A1F' opacity='0.67'/><rect x='410.0' y='169.8' width='40.0' height='30.2' rx='2' fill='#FF5A1F' opacity='0.62'/></g>
+    
+    <rect x='280' y='456' width='480' height='220' rx='5' fill='#161B22' stroke='#232B35'/>
+    
+        <text x='300' y='486' font-family='Helvetica,Arial,sans-serif' font-size='14.5' font-weight='600' fill='#E9EDF2'>Box plot comparison</text>
+        <rect x='280' y='512' width='480' height='1' fill='#1B2129'/>
+    <g transform='translate(300,532)'>
+<line x1='60' y1='30' x2='60' y2='150' stroke='#1B2129' stroke-width='1'/><rect x='40' y='60' width='40' height='50' rx='2' fill='none' stroke='#FF5A1F' stroke-width='1.6'/><line x1='40' y1='85' x2='80' y2='85' stroke='#FF5A1F' stroke-width='1.6'/><line x1='130' y1='30' x2='130' y2='150' stroke='#1B2129' stroke-width='1'/><rect x='110' y='75' width='40' height='50' rx='2' fill='none' stroke='#5B9CFF' stroke-width='1.6'/><line x1='110' y1='100' x2='150' y2='100' stroke='#5B9CFF' stroke-width='1.6'/><line x1='200' y1='30' x2='200' y2='150' stroke='#1B2129' stroke-width='1'/><rect x='180' y='90' width='40' height='50' rx='2' fill='none' stroke='#31D8A6' stroke-width='1.6'/><line x1='180' y1='115' x2='220' y2='115' stroke='#31D8A6' stroke-width='1.6'/><line x1='270' y1='30' x2='270' y2='150' stroke='#1B2129' stroke-width='1'/><rect x='250' y='60' width='40' height='50' rx='2' fill='none' stroke='#F5B942' stroke-width='1.6'/><line x1='250' y1='85' x2='290' y2='85' stroke='#F5B942' stroke-width='1.6'/><line x1='340' y1='30' x2='340' y2='150' stroke='#1B2129' stroke-width='1'/><rect x='320' y='75' width='40' height='50' rx='2' fill='none' stroke='#FF5A1F' stroke-width='1.6'/><line x1='320' y1='100' x2='360' y2='100' stroke='#FF5A1F' stroke-width='1.6'/><line x1='410' y1='30' x2='410' y2='150' stroke='#1B2129' stroke-width='1'/><rect x='390' y='90' width='40' height='50' rx='2' fill='none' stroke='#5B9CFF' stroke-width='1.6'/><line x1='390' y1='115' x2='430' y2='115' stroke='#5B9CFF' stroke-width='1.6'/>
+</g>
+    
+    <rect x='780' y='456' width='480' height='220' rx='5' fill='#161B22' stroke='#232B35'/>
+    
+        <text x='800' y='486' font-family='Helvetica,Arial,sans-serif' font-size='14.5' font-weight='600' fill='#E9EDF2'>PCA projection</text>
+        <rect x='780' y='512' width='480' height='1' fill='#1B2129'/>
+    <g transform='translate(800,532)'>
+<circle cx='20' cy='20' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='57' cy='73' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='94' cy='126' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='131' cy='29' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='168' cy='82' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='205' cy='135' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='242' cy='38' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='279' cy='91' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='316' cy='144' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='353' cy='47' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='390' cy='100' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='427' cy='153' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='44' cy='56' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='81' cy='109' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='118' cy='162' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='155' cy='65' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='192' cy='118' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='229' cy='21' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='266' cy='74' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='303' cy='127' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='340' cy='30' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='377' cy='83' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='414' cy='136' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='31' cy='39' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='68' cy='92' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='105' cy='145' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='142' cy='48' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='179' cy='101' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='216' cy='154' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='253' cy='57' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='290' cy='110' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='327' cy='163' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='364' cy='66' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='401' cy='119' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='438' cy='22' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='55' cy='75' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='92' cy='128' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='129' cy='31' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='166' cy='84' r='4' fill='#5B9CFF' opacity='0.7'/><circle cx='203' cy='137' r='4' fill='#5B9CFF' opacity='0.7'/>
+</g>
+    
+    </svg>
